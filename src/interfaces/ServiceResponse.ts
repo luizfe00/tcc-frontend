@@ -1,4 +1,4 @@
-import { User, Paper, UserRoles } from "./Models";
+import { Paper, UserRoles, Theme, PaperStage } from "./Models";
 
 export type SignInResponse = {
   id: string;
@@ -24,27 +24,8 @@ export type CreateThemeResponse = {
 
 export type GetThemesResponse = Theme[];
 
-export type Theme = {
-  id: string;
-  label: string;
-  summary: string;
-  duration: number;
-  owner: User;
-  ownerId: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string;
-  paperProposition: Paper | null;
-  paper: Paper | null;
-  interests: Interest[];
-};
+export type ApproveInterestResponse = Paper;
 
-export type Interest = {
-  createdAt: string;
-  id: string;
-  ownerId: string;
-  text: string;
-  themeId: string;
-  updatedAt: string;
-  owner: User;
-};
+export type GetUserPapersResponse = Paper[];
+
+export type CreateStageResponse = PaperStage;
