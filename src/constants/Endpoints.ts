@@ -11,4 +11,6 @@ export const ENDPOINT = {
   GET_USER_PAPERS: "paper",
   CREATE_STAGE: "stage",
   LIST_PAPER_STAGES: "stage/paper/:id",
+  LIST_PENDING_FEEDBACK: "stage/pending",
+  UPDATE_STAGE: "stage/:id",
 };

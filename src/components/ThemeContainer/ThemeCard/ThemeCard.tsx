@@ -11,7 +11,7 @@ export interface ThemeCardProps {
 export const ThemeCard = ({ theme, onClick = () => {} }: ThemeCardProps) => {
   return (
     <Card
-      className="p-4 shadow-sm cursor-pointer hover:scale-[1.02] hover:transition-transform"
+      className="p-4 shadow-sm cursor-pointer hover:-translate-y-1 hover:transition-transform"
       onClick={() => onClick(theme)}
     >
       <div className="flex items-center gap-2">

@@ -49,6 +49,8 @@ export type PaperStage = {
   id?: string;
   label: string;
   paper: Paper;
+  viewed: boolean;
+  feedback?: string;
   createdAt: string;
   updatedAt: string;
 };

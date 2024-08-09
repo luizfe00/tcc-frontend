@@ -21,3 +21,9 @@ export type CreateStagePayload = {
   label: string;
   paperId: string;
 };
+
+export type UpdateStagePayload = {
+  id: string;
+  viewed?: boolean;
+  feedback?: string;
+};
