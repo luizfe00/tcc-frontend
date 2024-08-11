@@ -20,7 +20,11 @@ export default function LoginPage() {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(data);
-        navigate("/home");
+        if (data.role === "COORDINATOR") {
+          navigate("/dashboard");
+        } else {
+          navigate("/home");
+        }
       } catch (error) {
         console.log(error);
       }

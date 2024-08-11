@@ -16,6 +16,7 @@ import axiosInstace from "@/services/axios";
 import { ENDPOINT } from "@/constants/Endpoints";
 import { useUserStore } from "@/user/user.store";
 import { useNavigate } from "react-router-dom";
+import { User } from "@/interfaces";
 
 export interface LoginFormPayload {
   username: string;
@@ -40,10 +41,17 @@ const LoginForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const payload = await axiosInstace.post(`/${ENDPOINT.SIGN_IN}`, values);
-      sessionStorage.setItem("tcc_user_token", payload.data.token);
-      setUser(payload.data);
-      navigate("/home");
+      const { data } = await axiosInstace.post<User>(
+        `/${ENDPOINT.SIGN_IN}`,
+        values
+      );
+      sessionStorage.setItem("tcc_user_token", data.token);
+      setUser(data);
+      if (data.role === "COORDINATOR") {
+        navigate("/dashboard");
+      } else {
+        navigate("/home");
+      }
     } catch (error) {
       console.log(error);
     }

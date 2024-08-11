@@ -50,6 +50,7 @@ export type PaperStage = {
   label: string;
   paper: Paper;
   viewed: boolean;
+  message?: string;
   feedback?: string;
   createdAt: string;
   updatedAt: string;
