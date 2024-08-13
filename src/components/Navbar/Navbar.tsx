@@ -8,6 +8,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
 
+  const hideTccLink = user?.role === "STUDENT" && !user.orienteePaper;
+
   return (
     <div
       id="navbar"
@@ -17,9 +19,13 @@ const Navbar = () => {
         <Button variant="link" onClick={() => navigate("/home")}>
           Home
         </Button>
-        <Button variant="link" onClick={() => navigate("/papers")}>
-          TCC
-        </Button>
+        {hideTccLink ? (
+          <></>
+        ) : (
+          <Button variant="link" onClick={() => navigate("/papers")}>
+            TCC
+          </Button>
+        )}
       </div>
       <div className="flex items-center gap-x-2">
         <span>Bem vindo,</span>

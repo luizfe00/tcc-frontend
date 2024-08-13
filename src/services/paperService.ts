@@ -1,6 +1,6 @@
 import { ENDPOINT } from "@/constants/Endpoints";
 import axiosInstace from "./axios";
-import { GetUserPapersResponse, Paper } from "@/interfaces";
+import { GetUserPapersResponse, Paper, UpdatePaperPayload } from "@/interfaces";
 
 export const getUserPapers = async () => {
   const { data } = await axiosInstace.get<GetUserPapersResponse>(
@@ -15,4 +15,11 @@ export const getPaperDetails = async (paperId: string) => {
     `/${ENDPOINT.GET_PAPER_DETAILS.replace(":id", paperId)}`
   );
   return data;
+};
+
+export const updatePaper = async (paper: UpdatePaperPayload) => {
+  await axiosInstace.put(
+    `/${ENDPOINT.UPDATE_PAPER.replace(":id", paper.paperId)}`,
+    { documentUrl: paper.documentUrl }
+  );
 };

@@ -39,6 +39,7 @@ export type Paper = {
   orientee?: User;
   advisor?: User;
   theme?: Theme;
+  themeId?: string;
   stages?: PaperStage[];
   createdAt: string;
   updatedAt: string;

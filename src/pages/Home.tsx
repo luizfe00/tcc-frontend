@@ -25,7 +25,7 @@ export default function HomePage() {
   const [showNewThemeModal, setShowNewThemeModal] = useState(false);
 
   const { data } = useQuery({
-    queryKey: ["studentThemes"],
+    queryKey: ["allThemes"],
     queryFn:
       user?.role === "STUDENT" ? getAllProfessorThemes : getAllStudentThemes,
   });
@@ -76,8 +76,8 @@ export default function HomePage() {
                   />
                 </div>
                 <ThemeSearchList
-                  onPress={(theme) => console.log({ theme })}
                   themes={data}
+                  orienteePaperThemeId={user?.orienteePaper?.themeId}
                 />
               </div>
             </div>
@@ -89,7 +89,7 @@ export default function HomePage() {
                   label="Meus Temas"
                   actions={themeOptionActions}
                 />
-                <div className="flex flex-col gap-y-2 h-4/5">
+                <div className="flex flex-col gap-y-2 h-4/5 w-full">
                   {userThemes && userThemes?.length > 1 && (
                     <Input
                       type="email"
@@ -97,8 +97,8 @@ export default function HomePage() {
                       className="w-full"
                     />
                   )}
-                  <ScrollArea className="h-full flex flex-col">
-                    <div className="py-2">
+                  <ScrollArea className="h-full flex-1">
+                    <div className="py-2 flex flex-col gap-2 max-h-[300px]">
                       {userThemes?.map((theme) => (
                         <OwnThemePresentation key={theme.label} theme={theme} />
                       ))}
@@ -108,7 +108,11 @@ export default function HomePage() {
               </div>
               <div className="h-1/2">
                 <ThemeContainerTitle label="Meus Interesses" />
-                <InterestList interests={userInterests} owner />
+                <InterestList
+                  interests={userInterests}
+                  owner
+                  readonly={!!user?.orienteePaper}
+                />
               </div>
             </div>
           </div>

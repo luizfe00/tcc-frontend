@@ -34,7 +34,8 @@ export interface NewDeliveryProps {
 
 const zodSchema = z.object({
   label: z.string().min(5),
-  message: z.string().min(5),
+  message: z.string().min(5).optional(),
+  documentUrl: z.string().url(),
 });
 
 export const NewDelivery = ({
@@ -61,6 +62,7 @@ export const NewDelivery = ({
       const body: CreateStagePayload = {
         label: data.label,
         paperId,
+        message: data.message,
       };
 
       mutation.mutate(body);
@@ -97,10 +99,7 @@ export const NewDelivery = ({
                 <FormItem className="grow">
                   <FormLabel>Titulo</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Informe um titulo para sua entrega."
-                      {...field}
-                    />
+                    <Input placeholder="Título da entrega..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -122,6 +121,7 @@ export const NewDelivery = ({
                 </FormItem>
               )}
             />
+
             <Button type="submit" size={"sm"}>
               Enviar
             </Button>

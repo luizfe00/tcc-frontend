@@ -5,11 +5,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 export interface InterestListProps extends InterestCardActions {
   interests?: Interest[];
   owner?: boolean;
+  readonly?: boolean;
 }
 
 export const InterestList = ({
   interests = [],
   owner,
+  readonly,
   onApprove,
   onReject,
   onDelete,
@@ -28,6 +30,7 @@ export const InterestList = ({
               onReject={onReject}
               onDelete={onDelete}
               owner={owner}
+              readonly={readonly}
             />
           ))
         )}

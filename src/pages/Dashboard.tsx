@@ -1,7 +1,6 @@
 import { PapersGeneralView } from "@/components/Charts/PapersGeneralView";
 import { ThemesGeneralView } from "@/components/Charts/ThemesGeneralView";
 import { Separator } from "@/components/ui/separator";
-import React from "react";
 
 export const DashboardPage = () => {
   return (

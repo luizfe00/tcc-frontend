@@ -60,6 +60,19 @@ export const paperColumns: ColumnDef<PaperTable>[] = [
   {
     accessorKey: "link",
     header: "Link",
+    cell: ({ row }) => {
+      const link = row.getValue("link") as string;
+      const handleClick = (event: React.MouseEvent) => {
+        event.preventDefault();
+        window.open(link, "_blank");
+      };
+
+      return (
+        <Button variant="link" className="pl-0 text-sm" onClick={handleClick}>
+          {link}
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "type",

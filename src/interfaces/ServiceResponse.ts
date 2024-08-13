@@ -5,7 +5,7 @@ export type SignInResponse = {
   name: string;
   email: string;
   enrollment: string;
-  interestId: string | string[] | null;
+  orienteePaper?: Paper;
   role: UserRoles;
   token: string;
 };

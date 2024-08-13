@@ -16,7 +16,7 @@ export const StudentPaperView = ({ papers = [] }: StudentPaperViewProps) => {
 
   return (
     <>
-      {papers?.length && <PaperDetails paper={papers?.[0]} />}
+      {papers?.length ? <PaperDetails paper={papers?.[0]} /> : <></>}
       <div className="my-4">
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium text-gray-600">Progresso</span>
@@ -24,15 +24,16 @@ export const StudentPaperView = ({ papers = [] }: StudentPaperViewProps) => {
             variant="outline"
             size="icon"
             onClick={() => setShowNewDeliveryDialog(true)}
+            disabled={!papers.length}
           >
             <PlusIcon className="w-6" />
           </Button>
         </div>
         <Separator className="mt-1" />
       </div>
-      <PaperStages paperId={papers?.[0].id} />
+      <PaperStages paperId={papers?.[0]?.id} />
       <NewDelivery
-        paperId={papers?.[0].id ?? ""}
+        paperId={papers?.[0]?.id ?? ""}
         open={showNewDeliveryDialog}
         onOpenChange={setShowNewDeliveryDialog}
       />

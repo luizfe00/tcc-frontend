@@ -4,13 +4,71 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
 import { Paper } from "@/interfaces";
+import { updatePaper } from "@/services/paperService";
+import { cn } from "@/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { EditIcon } from "lucide-react";
+import { useState } from "react";
 
 export interface PaperDetailsProps {
   paper: Paper;
 }
 
 export const PaperDetails = ({ paper }: PaperDetailsProps) => {
+  const [showLinkInput, setShowLinkInput] = useState(false);
+  const [documentLink, setDocumentLink] = useState(paper.documentUrl);
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationKey: ["updatePaper"],
+    mutationFn: updatePaper,
+    onSuccess: (data, variables) => {
+      console.log(data, variables);
+      queryClient.setQueryData(["userPapers"], (oldData: Paper[]) => {
+        return [{ ...oldData[0], documentUrl: variables.documentUrl }];
+      });
+      setShowLinkInput(false);
+      toast({
+        description: "Link atualizado com sucesso",
+        duration: 2500,
+      });
+    },
+    onError: () => {
+      setShowLinkInput(false);
+      toast({
+        description: "Houve um erro ao atualizar o link do documento",
+        variant: "destructive",
+        duration: 2500,
+      });
+    },
+  });
+
+  const handleEditLink = async () => {
+    if (!showLinkInput) {
+      setShowLinkInput(true);
+      return;
+    }
+
+    if (documentLink === paper.documentUrl) {
+      setShowLinkInput(false);
+      return;
+    }
+
+    mutation.mutate({ paperId: paper.id ?? "", documentUrl: documentLink });
+  };
+
+  const handleLinkClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    window.open(paper.documentUrl, "_blank");
+  };
+
   return (
     <div className="mb-6">
       <span className="block w-full font-bold text-center text-lg">
@@ -30,10 +88,15 @@ export const PaperDetails = ({ paper }: PaperDetailsProps) => {
         <div className="flex flex-col">
           <span className="font-semibold text-sm">
             Início:{" "}
-            <span className="font-normal">{paper.theme?.startDate}</span>
+            <span className="font-normal">
+              {format(paper.theme?.startDate ?? "", "dd/MM/yyyy")}
+            </span>
           </span>
           <span className="font-semibold text-sm">
-            Fim: <span className="font-normal">{paper.theme?.endDate}</span>
+            Fim:{" "}
+            <span className="font-normal">
+              {format(paper.theme?.endDate ?? "", "dd/MM/yyyy")}
+            </span>
           </span>
         </div>
       </div>
@@ -50,6 +113,38 @@ export const PaperDetails = ({ paper }: PaperDetailsProps) => {
       <span className="block text-end w-full text-xs font-medium text-gray-500">
         {paper.approved ? "Aprovado" : "Em andamento"}
       </span>
+      <div className="flex flex-col">
+        <span className="text-sm font-semibold mb-1">
+          Link para o documento
+        </span>
+        <div className="flex gap-2">
+          {showLinkInput ? (
+            <Input
+              className="max-w-[800px] text-sm"
+              value={documentLink}
+              onChange={(event) => setDocumentLink(event.target.value)}
+            />
+          ) : (
+            <Button
+              variant={"link"}
+              className={cn(!showLinkInput && "pl-0", "text-sm")}
+              onClick={handleLinkClick}
+            >
+              {paper.documentUrl}
+            </Button>
+          )}
+          <Button
+            variant={showLinkInput ? "default" : "ghost"}
+            onClick={handleEditLink}
+          >
+            {showLinkInput ? (
+              <span>Salvar</span>
+            ) : (
+              <EditIcon className="w-4 h-4" />
+            )}
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

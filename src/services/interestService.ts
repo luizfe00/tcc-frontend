@@ -3,22 +3,31 @@ import axiosInstace from "./axios";
 import {
   ApproveInterestPayload,
   ApproveInterestResponse,
+  CreateNewInterestPayload,
   Interest,
 } from "@/interfaces";
 
 export const getUserInterests = async () => {
-  const interests = await axiosInstace.get<Interest[]>(
+  const { data } = await axiosInstace.get<Interest[]>(
     `/${ENDPOINT.GET_USER_INTERESTS}`
   );
-  return interests.data;
+  return data;
 };
 
 export const approveInterest = async (
   approvedInterestBody: ApproveInterestPayload
 ) => {
-  const approvedInterest = await axiosInstace.post<ApproveInterestResponse>(
+  const { data } = await axiosInstace.post<ApproveInterestResponse>(
     `/${ENDPOINT.APPROVE_INTEREST}`,
     approvedInterestBody
   );
-  return approvedInterest;
+  return data;
+};
+
+export const createInterest = async (newInterest: CreateNewInterestPayload) => {
+  const { data } = await axiosInstace.post<Interest>(
+    `${ENDPOINT.CREATE_INTEREST}`,
+    newInterest
+  );
+  return data;
 };

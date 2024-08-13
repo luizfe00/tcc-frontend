@@ -15,16 +15,18 @@ export interface InterestCardActions {
 export interface InterestCardProps extends InterestCardActions {
   interest: Interest;
   owner?: boolean;
+  readonly?: boolean;
 }
 
 export const InterestCard = ({
   interest,
   owner,
+  readonly = false,
   onApprove = () => {},
   onReject = () => {},
 }: InterestCardProps) => {
   return (
-    <Card className="p-3">
+    <Card className="p-3 cursor-default">
       <div className="flex flex-col gap-y-2">
         <div className="flex justify-between items-center">
           <span className="text sm font-medium">
@@ -39,7 +41,12 @@ export const InterestCard = ({
       </div>
       <div className="flex gap-2 justify-end">
         {owner ? (
-          <Button variant="destructive" size="icon" className="w-8 h-8">
+          <Button
+            variant="destructive"
+            size="icon"
+            className="w-8 h-8"
+            disabled={readonly}
+          >
             <TrashIcon className="w-5" />
           </Button>
         ) : (
@@ -48,10 +55,15 @@ export const InterestCard = ({
               size="sm"
               variant="destructive"
               onClick={() => onReject(interest)}
+              disabled={readonly}
             >
               Rejeitar
             </Button>
-            <Button size="sm" onClick={() => onApprove(interest)}>
+            <Button
+              size="sm"
+              onClick={() => onApprove(interest)}
+              disabled={readonly}
+            >
               Aceitar
             </Button>
           </>

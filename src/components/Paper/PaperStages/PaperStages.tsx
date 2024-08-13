@@ -12,6 +12,7 @@ import { getPaperStages } from "@/services/stageService";
 import { useToast } from "@/components/ui/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/outline";
+import { format } from "date-fns";
 
 export interface PaperStagesProps {
   paperId?: string;
@@ -22,6 +23,7 @@ export const PaperStages = ({ paperId = "" }: PaperStagesProps) => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["paperStages"],
     queryFn: () => getPaperStages(paperId),
+    enabled: paperId !== "",
   });
 
   if (error) {
@@ -58,7 +60,8 @@ export const PaperStages = ({ paperId = "" }: PaperStagesProps) => {
           <TableRow>
             <TableHead>Data do envio</TableHead>
             <TableHead>Titulo</TableHead>
-            <TableHead>Link</TableHead>
+            <TableHead>Mensagem</TableHead>
+            <TableHead>Feedback</TableHead>
             <TableHead className="text-center max-w-[48px]">
               Visualizado
             </TableHead>
@@ -67,9 +70,12 @@ export const PaperStages = ({ paperId = "" }: PaperStagesProps) => {
         <TableBody>
           {data?.map((stage) => (
             <TableRow key={stage.id}>
-              <TableCell className="font-medium">{stage.createdAt}</TableCell>
+              <TableCell className="font-medium">
+                {format(stage.createdAt, "dd/MM/yyyy")}
+              </TableCell>
               <TableCell>{stage.label}</TableCell>
-              <TableCell>{stage.paper?.documentUrl}</TableCell>
+              <TableCell>{stage.message}</TableCell>
+              <TableCell>{stage.feedback}</TableCell>
               <TableCell className="flex justify-center">
                 {stage.viewed ? (
                   <EyeIcon className="w-6" />

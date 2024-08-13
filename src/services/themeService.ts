@@ -1,4 +1,4 @@
-import { GetThemesResponse } from "@/interfaces";
+import { CreateNewThemePayload, GetThemesResponse, Theme } from "@/interfaces";
 import { ENDPOINT } from "../constants/Endpoints";
 import axiosInstace from "./axios";
 
@@ -23,5 +23,13 @@ export const getUserThemes = async () => {
     `/${ENDPOINT.GET_USER_THEMES}`
   );
 
+  return data;
+};
+
+export const createnewTheme = async (theme: CreateNewThemePayload) => {
+  const { data } = await axiosInstace.post<Theme>(
+    `/${ENDPOINT.CREATE_THEME}`,
+    theme
+  );
   return data;
 };

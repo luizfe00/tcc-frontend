@@ -19,7 +19,7 @@ export interface ThemeDetailsProps {
   onOpenChange?: (open: boolean) => void;
 }
 
-export const ThemeDetails = ({
+export const OwnThemeDetails = ({
   theme,
   open,
   onOpenChange,
@@ -43,7 +43,7 @@ export const ThemeDetails = ({
       });
     },
   });
-  const showNoInterestMessage = theme.interests.length === 0;
+  const showNoInterestMessage = theme?.interests?.length === 0;
 
   const handleApprove = async (interest: Interest) => {
     const professorId =

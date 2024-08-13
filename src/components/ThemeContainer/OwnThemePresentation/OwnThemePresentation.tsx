@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Theme } from "@/interfaces";
 import { ThemeCard } from "../ThemeCard/ThemeCard";
-import { ThemeDetails } from "./ThemeDetails/ThemeDetails";
+import { OwnThemeDetails } from "./ThemeDetails/ThemeDetails";
 
 export interface OwnThemePresentationProps {
   theme: Theme;
@@ -12,8 +12,12 @@ export const OwnThemePresentation = ({ theme }: OwnThemePresentationProps) => {
 
   return (
     <>
-      <ThemeCard theme={theme} onClick={() => setShowThemeDetails(true)} />
-      <ThemeDetails
+      <ThemeCard
+        theme={theme}
+        onClick={() => setShowThemeDetails(true)}
+        owner
+      />
+      <OwnThemeDetails
         open={showThemeDetails}
         onOpenChange={setShowThemeDetails}
         theme={theme}
