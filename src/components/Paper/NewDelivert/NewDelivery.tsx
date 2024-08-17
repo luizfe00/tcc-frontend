@@ -35,7 +35,6 @@ export interface NewDeliveryProps {
 const zodSchema = z.object({
   label: z.string().min(5),
   message: z.string().min(5).optional(),
-  documentUrl: z.string().url(),
 });
 
 export const NewDelivery = ({
@@ -54,32 +53,39 @@ export const NewDelivery = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["paperStages"] });
       toast({ description: "Envio criado com sucesso.", duration: 2500 });
+      form.reset();
+      onOpenChange(false);
+    },
+    onError: (error) => {
+      console.log(error);
+      toast({
+        description: "Erro ao criar envio.",
+        variant: "destructive",
+        duration: 2500,
+      });
     },
   });
 
   const handleSubmit = async (data: z.infer<typeof zodSchema>) => {
-    try {
-      const body: CreateStagePayload = {
-        label: data.label,
-        paperId,
-        message: data.message,
-      };
+    console.log(data);
+    const body: CreateStagePayload = {
+      label: data.label,
+      paperId,
+      message: data.message,
+    };
 
-      mutation.mutate(body);
-      onOpenChange(false);
-      form.resetField("label");
-      form.resetField("message");
-    } catch (error) {
-      toast({
-        description: "Ocorreu um erro ao criar sua entrada",
-        variant: "destructive",
-        duration: 2500,
-      });
+    mutation.mutate(body);
+  };
+
+  const handleCloseDialog = (open: boolean) => {
+    if (!open) {
+      form.reset();
     }
+    onOpenChange(open);
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleCloseDialog}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Nova Entrega</DialogTitle>

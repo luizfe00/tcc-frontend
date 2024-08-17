@@ -24,7 +24,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createnewTheme } from "@/services/themeService";
 import { CreateNewThemePayload, Theme } from "@/interfaces";
-import { addDays, addMonths } from "date-fns";
+import { addDays, addMonths, isAfter, isFuture } from "date-fns";
 import { DatePicker } from "@/components/DatePicker/DatePicker";
 
 export interface NewThemeProps {
@@ -43,13 +43,10 @@ const zodSchema = z
       .min(10, "Resumo deve conter ao menos 10 caracteres"),
     startDate: z
       .date()
-      .refine(
-        (data) => data > addDays(new Date(), -1),
-        "Data de inicio deve estar no futuro."
-      ),
+      .refine((data) => isFuture(data), "Data de inicio deve estar no futuro."),
     endDate: z.date(),
   })
-  .refine((data) => data.endDate > data.startDate, {
+  .refine((data) => isAfter(data.endDate, data.startDate), {
     message: "Data de fim deve ser maior que Data de início.",
     path: ["endDate"],
   });
@@ -89,10 +86,13 @@ export const NewTheme = ({
       ? {
           endDate: new Date(theme.endDate),
           startDate: new Date(theme.startDate),
-          label: theme.label,
+          label: theme.label ?? "",
           summary: theme.summary,
         }
-      : {},
+      : {
+          label: "",
+          summary: "",
+        },
   });
 
   const onSubmit = (data: NewThemeForm) => {
@@ -159,7 +159,7 @@ export const NewTheme = ({
                         onSelect={field.onChange}
                         datePickerProps={{
                           disabled: {
-                            before: new Date(),
+                            before: addDays(new Date(), 1),
                           },
                         }}
                       />

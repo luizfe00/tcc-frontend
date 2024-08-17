@@ -33,7 +33,7 @@ export const ProfessorPaperView = ({
       orientee: `${paper.orientee?.name} - ${paper.orientee?.email}`,
       title: paper.theme?.label ?? "",
       type: paper.type,
-      approved: paper.approved,
+      approvals: paper?.approvals ?? [],
     }));
 
     return dataTable;

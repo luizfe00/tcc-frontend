@@ -25,6 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updatePendingFeedback } from "@/services/stageService";
 import { toast } from "@/components/ui/use-toast";
+import React from "react";
 
 export interface PendingStageDetailsProps {
   open?: boolean;
@@ -73,6 +74,11 @@ export const PendingStageDetails = ({
     resolver: zodResolver(zodSchema),
   });
 
+  const handleLinkClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    window.open(stage?.paper?.documentUrl, "_blank");
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[680px]">
@@ -89,7 +95,15 @@ export const PendingStageDetails = ({
             <span className="text-sm font-medium text-gray-500">
               Link para documento:
             </span>
-            <span>{stage?.paper?.documentUrl}</span>
+            <Button
+              variant="link"
+              onClick={handleLinkClick}
+              className="pl-0 sm:max-w-[600px] "
+            >
+              <span className="text-sm text-ellipsis overflow-hidden">
+                {stage?.paper?.documentUrl}
+              </span>
+            </Button>
           </div>
           <Form {...form}>
             <form

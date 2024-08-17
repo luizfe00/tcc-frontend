@@ -1,18 +1,10 @@
 import { Button } from "@/components/ui/button";
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  DocumentCheckIcon,
-  DocumentTextIcon,
-} from "@heroicons/react/24/outline";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
+
 import { PaperActions } from "../PaperActions/PaperActions";
+import { PaperStatus } from "../PaperStatus/PaperStatus";
+import { Approval } from "@/interfaces";
 
 export type PaperTable = {
   id: string;
@@ -20,7 +12,7 @@ export type PaperTable = {
   orientee: string;
   title: string;
   link: string;
-  approved: boolean;
+  approvals: Approval[];
   type: "PTCC" | "TCC";
 };
 
@@ -84,37 +76,19 @@ export const paperColumns: ColumnDef<PaperTable>[] = [
   {
     id: "status",
     accessorKey: "status",
-    header: "Status",
+    header: () => {
+      return <span className="block w-full text-center">Status</span>;
+    },
     cell: ({ row }) => {
       const paper = row.original;
-      return (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              {paper?.approved ? (
-                <DocumentCheckIcon className="w-5" />
-              ) : (
-                <DocumentTextIcon className="w-5" />
-              )}
-            </TooltipTrigger>
-            <TooltipContent>
-              {paper?.approved ? (
-                <span>Aprovado</span>
-              ) : (
-                <span>Em Andamento</span>
-              )}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      );
+      return <PaperStatus approvals={paper?.approvals} />;
     },
   },
   {
     id: "actions",
     cell: ({ row }) => {
       const paper = row.original;
-
-      return <PaperActions paperId={paper.id} />;
+      return <PaperActions paperId={paper.id} approvals={paper.approvals} />;
     },
   },
 ];

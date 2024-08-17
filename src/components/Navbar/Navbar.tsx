@@ -9,6 +9,7 @@ const Navbar = () => {
   const user = useUserStore((state) => state.user);
 
   const hideTccLink = user?.role === "STUDENT" && !user.orienteePaper;
+  const hideHomeLink = user?.role === "STUDENT" && user.orienteePaper;
 
   return (
     <div
@@ -16,12 +17,12 @@ const Navbar = () => {
       className="w-full flex justify-between p-4 items-center shadow-md"
     >
       <div className="flex gap-x-2 items-center grow">
-        <Button variant="link" onClick={() => navigate("/home")}>
-          Home
-        </Button>
-        {hideTccLink ? (
-          <></>
-        ) : (
+        {!hideHomeLink && (
+          <Button variant="link" onClick={() => navigate("/home")}>
+            Home
+          </Button>
+        )}
+        {!hideTccLink && (
           <Button variant="link" onClick={() => navigate("/papers")}>
             TCC
           </Button>

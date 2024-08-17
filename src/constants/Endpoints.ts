@@ -16,4 +16,6 @@ export const ENDPOINT = {
   GET_PAPER_DETAILS: "paper/:id",
   CREATE_INTEREST: "interest",
   UPDATE_PAPER: "paper/:id",
+  SUBMIT_PAPER: "approval",
+  GET_PENDING_APPROVALS: "approval/pending",
 };

@@ -34,7 +34,6 @@ export type Interest = {
 export type Paper = {
   id?: string;
   documentUrl?: string;
-  approved: boolean;
   type: PaperType;
   orientee?: User;
   advisor?: User;
@@ -44,6 +43,7 @@ export type Paper = {
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
+  approvals?: Approval[];
 };
 
 export type PaperStage = {
@@ -55,4 +55,14 @@ export type PaperStage = {
   feedback?: string;
   createdAt: string;
   updatedAt: string;
+};
+
+export type Approval = {
+  id?: string;
+  createdAt?: string;
+  response?: string;
+  approval?: boolean;
+  paperId?: string;
+  paper?: Paper;
+  type?: PaperType;
 };

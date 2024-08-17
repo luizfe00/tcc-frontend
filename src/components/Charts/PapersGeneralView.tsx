@@ -12,11 +12,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "../ui/chart";
-
-const chartData = [
-  { type: "ptcc", count: 48, fill: "var(--color-ptcc)" },
-  { type: "tcc", count: 26, fill: "var(--color-tcc)" },
-];
+import { PaperPerMonth } from "@/interfaces/Dashboard";
+import { useMemo } from "react";
 
 const chartConfig = {
   count: {
@@ -33,7 +30,34 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export const PapersGeneralView = () => {
+export type PapersGeneralViewProps = {
+  data?: PaperPerMonth[];
+};
+
+// function getRandomInt(max) {
+//   return Math.floor(Math.random() * max);
+// }
+
+export const PapersGeneralView: React.FC<PapersGeneralViewProps> = ({
+  data = [],
+}) => {
+  const chartData = useMemo(() => {
+    let ptccSum = 0;
+    let tccSum = 0;
+
+    data.forEach((entry) => {
+      ptccSum += entry.ptccCount;
+      tccSum += entry.tccCount;
+      // ptccSum += getRandomInt(4);
+      // tccSum += getRandomInt(4);
+    });
+
+    return [
+      { type: "ptcc", count: ptccSum, fill: "var(--color-ptcc)" },
+      { type: "tcc", count: tccSum, fill: "var(--color-tcc)" },
+    ];
+  }, [data]);
+
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
@@ -72,7 +96,10 @@ export const PapersGeneralView = () => {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          74
+                          {chartData.reduce(
+                            (prev, curr) => prev + curr.count,
+                            0
+                          )}
                         </tspan>
                         <tspan
                           x={viewBox.cx}

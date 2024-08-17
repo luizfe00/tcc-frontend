@@ -75,17 +75,21 @@ export const ThemeCard = ({
           {theme.summary}
         </p>
       </Card>
-      <ThemeDetailsDialog
-        open={showDetails}
-        onOpenChange={setShowDetails}
-        theme={theme}
-        disabled={!!orienteePaperThemeId}
-      />
-      <NewTheme
-        open={showThemeForm}
-        onOpenChange={setShowThemeForm}
-        theme={theme}
-      />
+      {showDetails && (
+        <ThemeDetailsDialog
+          open={showDetails}
+          onOpenChange={setShowDetails}
+          theme={theme}
+          disabled={!!orienteePaperThemeId}
+        />
+      )}
+      {showThemeForm && (
+        <NewTheme
+          open={showThemeForm}
+          onOpenChange={setShowThemeForm}
+          theme={theme}
+        />
+      )}
     </>
   );
 };

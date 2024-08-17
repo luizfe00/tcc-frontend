@@ -12,15 +12,31 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { PaperPerMonth } from "@/interfaces/Dashboard";
+import { useCallback } from "react";
+import { getMonth } from "date-fns";
 
-const chartData = [
-  { month: "Janeiro", open: 26, ptcc: 20, tcc: 6 },
-  { month: "Fevereiro", open: 16, ptcc: 10, tcc: 6 },
-  { month: "Março", open: 8, ptcc: 5, tcc: 3 },
-  { month: "Abril", open: 20, ptcc: 10, tcc: 10 },
-  { month: "Maio", open: 14, ptcc: 6, tcc: 8 },
-  { month: "Junho", open: 30, ptcc: 20, tcc: 10 },
-];
+type PapersPerMonthChart = {
+  month: string;
+  open: number;
+  ptcc: number;
+  tcc: number;
+};
+
+const monthMap: Record<string, string> = {
+  "1": "Janeiro",
+  "2": "Fevereiro",
+  "3": "Março",
+  "4": "Abril",
+  "5": "Maio",
+  "6": "Junho",
+  "7": "Julho",
+  "8": "Agosto",
+  "9": "Setembro",
+  "10": "Outubro",
+  "11": "Novembro",
+  "12": "Dezembro",
+};
 
 const chartConfig = {
   open: {
@@ -32,23 +48,53 @@ const chartConfig = {
     color: "#60a5fa",
   },
   tcc: {
-    label: "PTCC",
+    label: "TCC",
     color: "#60b5da",
   },
 } satisfies ChartConfig;
 
-export const ThemesGeneralView = () => {
+export type PaperPerMonthViewProps = {
+  data?: PaperPerMonth[];
+};
+
+export const PaperPerMonthView: React.FC<PaperPerMonthViewProps> = ({
+  data = [],
+}) => {
+  const buildChardData = useCallback(() => {
+    const chartData: PapersPerMonthChart[] = data.map((entry) => ({
+      month: monthMap[entry.month],
+      open: entry.totalPapers,
+      ptcc: entry.ptccCount,
+      tcc: entry.tccCount,
+    }));
+    const emptyRows = 6 - data.length;
+
+    if (emptyRows > 0) {
+      const month = getMonth(new Date());
+      let initialMonth = month - data.length;
+      for (let i = 0; i < emptyRows; i++) {
+        const month = monthMap[initialMonth];
+        chartData.push({ month, open: 0, ptcc: 0, tcc: 0 });
+        initialMonth--;
+      }
+    }
+
+    return chartData.reverse();
+  }, [data]);
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Artigos em Produção</CardTitle>
-        <CardDescription>Resumo dos artigos por mês.</CardDescription>
+        <CardTitle>Evolução dos trabalhos por mês</CardTitle>
+        <CardDescription>
+          Evolução mensal dos trabalhos em andamento separado em TCC e PTCC.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
           <AreaChart
             accessibilityLayer
-            data={chartData}
+            data={buildChardData()}
             margin={{
               left: 12,
               right: 12,
@@ -80,7 +126,7 @@ export const ThemesGeneralView = () => {
               fill="var(--color-ptcc)"
               fillOpacity={0.4}
               stroke="var(--color-ptcc)"
-              stackId="a"
+              stackId="b"
             />
             <Area
               dataKey="tcc"
@@ -88,7 +134,7 @@ export const ThemesGeneralView = () => {
               fill="var(--color-tcc)"
               fillOpacity={0.4}
               stroke="var(--color-tcc)"
-              stackId="a"
+              stackId="c"
             />
           </AreaChart>
         </ChartContainer>

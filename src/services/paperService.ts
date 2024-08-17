@@ -1,6 +1,11 @@
 import { ENDPOINT } from "@/constants/Endpoints";
 import axiosInstace from "./axios";
-import { GetUserPapersResponse, Paper, UpdatePaperPayload } from "@/interfaces";
+import {
+  Approval,
+  GetUserPapersResponse,
+  Paper,
+  UpdatePaperPayload,
+} from "@/interfaces";
 
 export const getUserPapers = async () => {
   const { data } = await axiosInstace.get<GetUserPapersResponse>(
@@ -22,4 +27,14 @@ export const updatePaper = async (paper: UpdatePaperPayload) => {
     `/${ENDPOINT.UPDATE_PAPER.replace(":id", paper.paperId)}`,
     { documentUrl: paper.documentUrl }
   );
+};
+
+export const submitPaper = async (paperId: string) => {
+  const { data } = await axiosInstace.post<Approval>(
+    `${ENDPOINT.SUBMIT_PAPER}`,
+    {
+      paperId,
+    }
+  );
+  return data;
 };

@@ -50,6 +50,10 @@ const LoginForm = () => {
       if (data.role === "COORDINATOR") {
         navigate("/dashboard");
       } else {
+        if (data?.orienteePaper) {
+          navigate("/papers");
+          return;
+        }
         navigate("/home");
       }
     } catch (error) {

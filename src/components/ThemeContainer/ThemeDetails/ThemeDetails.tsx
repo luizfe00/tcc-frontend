@@ -39,7 +39,7 @@ const zodSchema = z.object({
 type NewInterestForm = z.infer<typeof zodSchema>;
 
 export const ThemeDetailsDialog: React.FC<ThemeDetailsDialogProps> = ({
-  onOpenChange,
+  onOpenChange = () => {},
   open,
   theme,
   disabled = false,
@@ -52,10 +52,12 @@ export const ThemeDetailsDialog: React.FC<ThemeDetailsDialogProps> = ({
       queryClient.setQueryData(["userInterests"], (oldData: Interest[]) => {
         return [...oldData, data];
       });
+      form.reset();
       toast({
         description: "Interesse enviado com sucesso!",
         duration: 2500,
       });
+      onOpenChange(false);
     },
     onError: (error) => {
       console.log(error);
@@ -69,6 +71,9 @@ export const ThemeDetailsDialog: React.FC<ThemeDetailsDialogProps> = ({
 
   const form = useForm<NewInterestForm>({
     resolver: zodResolver(zodSchema),
+    defaultValues: {
+      text: "",
+    },
   });
 
   const handleNewInterest = (data: NewInterestForm) => {
