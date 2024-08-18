@@ -21,10 +21,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { getPaperDetails } from "@/services/paperService";
+import {
+  getPaperApprovalStatusIcon,
+  getPaperApprovalStatusLabel,
+} from "@/utils/PaperUtil";
 import { EyeSlashIcon } from "@heroicons/react/24/outline";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { EyeIcon, FileCheckIcon, FilePenLineIcon } from "lucide-react";
+import { EyeIcon } from "lucide-react";
 
 export interface PaperDetailsModalProps {
   open?: boolean;
@@ -42,8 +46,6 @@ export const PaperDetailsModal = ({
     queryFn: () => getPaperDetails(paperId),
     enabled: !!open && !!paperId,
   });
-
-  console.log(data);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -71,14 +73,10 @@ export const PaperDetailsModal = ({
               </span>
               <Tooltip>
                 <TooltipTrigger>
-                  {data?.approved ? (
-                    <FileCheckIcon className="w-4 h-4" />
-                  ) : (
-                    <FilePenLineIcon className="w-4 h-4" />
-                  )}
+                  {getPaperApprovalStatusIcon(data?.approvals ?? [])}
                 </TooltipTrigger>
                 <TooltipContent>
-                  {data?.approved ? "Aprovado" : "Em andamento"}
+                  {getPaperApprovalStatusLabel(data?.approvals ?? [])}
                 </TooltipContent>
               </Tooltip>
             </div>

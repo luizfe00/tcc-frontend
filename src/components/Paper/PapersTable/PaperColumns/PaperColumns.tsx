@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
 import { PaperActions } from "../PaperActions/PaperActions";
-import { PaperStatus } from "../PaperStatus/PaperStatus";
+import { PaperStatusContainer } from "../PaperStatus/PaperStatus";
 import { Approval } from "@/interfaces";
 
 export type PaperTable = {
@@ -81,7 +81,7 @@ export const paperColumns: ColumnDef<PaperTable>[] = [
     },
     cell: ({ row }) => {
       const paper = row.original;
-      return <PaperStatus approvals={paper?.approvals} />;
+      return <PaperStatusContainer approvals={paper?.approvals} />;
     },
   },
   {

@@ -5,6 +5,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Approval } from "@/interfaces";
+import { PaperStatus, PaperStatusValues } from "@/interfaces/Paper";
 import {
   ClockIcon,
   FileCheckIcon,
@@ -17,44 +18,44 @@ export type PaperStatusProps = {
   approvals?: Approval[];
 };
 
-export type PaperStatus = "Ongoing" | "Approved" | "Submitted" | "Rejected";
-
 type PaperStatusMapValue = {
   icon: React.ReactElement;
   label: string;
 };
 
 const PaperStatusIconMap: Record<PaperStatus, PaperStatusMapValue> = {
-  Approved: {
+  approved: {
     icon: <FileCheckIcon className="w-4 h-4" />,
-    label: "Aprovado",
+    label: PaperStatusValues.approved,
   },
-  Ongoing: {
+  ongoing: {
     icon: <NotebookPenIcon className="w-4 h-4" />,
-    label: "Em produção",
+    label: PaperStatusValues.ongoing,
   },
-  Rejected: {
+  rejected: {
     icon: <FileXIcon className="w-4 h-4" />,
-    label: "Rejeitado",
+    label: PaperStatusValues.rejected,
   },
-  Submitted: {
+  waiting: {
     icon: <ClockIcon className="w-4 h-4" />,
-    label: "Aguardando",
+    label: PaperStatusValues.waiting,
   },
 };
 
-export const PaperStatus: React.FC<PaperStatusProps> = ({ approvals = [] }) => {
+export const PaperStatusContainer: React.FC<PaperStatusProps> = ({
+  approvals = [],
+}) => {
   const paperStatus = React.useMemo(() => {
-    if (!approvals.length) return PaperStatusIconMap.Ongoing;
+    if (!approvals.length) return PaperStatusIconMap.ongoing;
     if (approvals.length === 2) {
-      if (approvals[1].approval) return PaperStatusIconMap.Approved;
-      return PaperStatusIconMap.Ongoing;
+      if (approvals[1].approval) return PaperStatusIconMap.approved;
+      return PaperStatusIconMap.ongoing;
     }
     const pending = approvals.some((approval) => approval.approval == null);
-    if (pending) return PaperStatusIconMap.Submitted;
+    if (pending) return PaperStatusIconMap.waiting;
     const rejected = approvals.some((approval) => approval.approval === false);
-    if (rejected) return PaperStatusIconMap.Rejected;
-    return PaperStatusIconMap.Ongoing;
+    if (rejected) return PaperStatusIconMap.rejected;
+    return PaperStatusIconMap.ongoing;
   }, [approvals]);
 
   return (

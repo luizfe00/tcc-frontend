@@ -111,7 +111,7 @@ export const PaperDetails = ({ paper }: PaperDetailsProps) => {
         </AccordionItem>
       </Accordion>
       <span className="block text-end w-full text-xs font-medium text-gray-500">
-        {paper.approved ? "Aprovado" : "Em andamento"}
+        {paper.approvals?.length ? "Aprovado" : "Em andamento"}
       </span>
       <div className="flex flex-col">
         <span className="text-sm font-semibold mb-1">

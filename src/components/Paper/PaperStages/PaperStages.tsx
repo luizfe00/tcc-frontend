@@ -53,40 +53,38 @@ export const PaperStages = ({ paperId = "" }: PaperStagesProps) => {
   }
 
   return (
-    <div>
-      <Table>
-        <TableCaption>Envios do trabalho.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Data do envio</TableHead>
-            <TableHead>Titulo</TableHead>
-            <TableHead>Mensagem</TableHead>
-            <TableHead>Feedback</TableHead>
-            <TableHead className="text-center max-w-[48px]">
-              Visualizado
-            </TableHead>
+    <Table>
+      <TableCaption>Envios do trabalho.</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Data do envio</TableHead>
+          <TableHead>Titulo</TableHead>
+          <TableHead>Mensagem</TableHead>
+          <TableHead>Feedback</TableHead>
+          <TableHead className="text-center max-w-[48px]">
+            Visualizado
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {data?.map((stage) => (
+          <TableRow key={stage.id}>
+            <TableCell className="font-medium">
+              {format(stage.createdAt, "dd/MM/yyyy")}
+            </TableCell>
+            <TableCell>{stage.label}</TableCell>
+            <TableCell>{stage.message}</TableCell>
+            <TableCell>{stage.feedback}</TableCell>
+            <TableCell className="flex justify-center">
+              {stage.viewed ? (
+                <EyeIcon className="w-6" />
+              ) : (
+                <EyeSlashIcon className="w-6" />
+              )}
+            </TableCell>
           </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data?.map((stage) => (
-            <TableRow key={stage.id}>
-              <TableCell className="font-medium">
-                {format(stage.createdAt, "dd/MM/yyyy")}
-              </TableCell>
-              <TableCell>{stage.label}</TableCell>
-              <TableCell>{stage.message}</TableCell>
-              <TableCell>{stage.feedback}</TableCell>
-              <TableCell className="flex justify-center">
-                {stage.viewed ? (
-                  <EyeIcon className="w-6" />
-                ) : (
-                  <EyeSlashIcon className="w-6" />
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
