@@ -1,4 +1,4 @@
-import { InterestBI, PaperPerMonth, StageBI, ThemeBI } from "./Dashboard";
+import { DashboardBI } from "./Dashboard";
 import { Paper, UserRoles, Theme, PaperStage } from "./Models";
 
 export type SignInResponse = {
@@ -31,9 +31,4 @@ export type GetUserPapersResponse = Paper[];
 
 export type CreateStageResponse = PaperStage;
 
-export type GetDashboardDataResponse = {
-  papers: PaperPerMonth[];
-  stages: StageBI;
-  interests: InterestBI;
-  themes: ThemeBI;
-};
+export type GetDashboardDataResponse = DashboardBI;

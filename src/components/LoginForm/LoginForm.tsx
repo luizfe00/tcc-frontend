@@ -17,6 +17,7 @@ import { ENDPOINT } from "@/constants/Endpoints";
 import { useUserStore } from "@/user/user.store";
 import { useNavigate } from "react-router-dom";
 import { User } from "@/interfaces";
+import { toast } from "../ui/use-toast";
 
 export interface LoginFormPayload {
   username: string;
@@ -47,6 +48,7 @@ const LoginForm = () => {
       );
       sessionStorage.setItem("tcc_user_token", data.token);
       setUser(data);
+      console.log(data);
       if (data.role === "COORDINATOR") {
         navigate("/dashboard");
       } else {
@@ -57,6 +59,11 @@ const LoginForm = () => {
         navigate("/home");
       }
     } catch (error) {
+      toast({
+        title: "Erro ao realizar login",
+        description: "Verifique suas credenciais e tente novamente.",
+        variant: "destructive",
+      });
       console.log(error);
     }
   }

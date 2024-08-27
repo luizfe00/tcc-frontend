@@ -12,7 +12,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "../ui/chart";
-import { PaperPerMonth } from "@/interfaces/Dashboard";
+import { PaperBI } from "@/interfaces/Dashboard";
 import { useMemo } from "react";
 
 const chartConfig = {
@@ -31,7 +31,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export type PapersGeneralViewProps = {
-  data?: PaperPerMonth[];
+  data?: PaperBI;
 };
 
 // function getRandomInt(max) {
@@ -39,22 +39,12 @@ export type PapersGeneralViewProps = {
 // }
 
 export const PapersGeneralView: React.FC<PapersGeneralViewProps> = ({
-  data = [],
+  data,
 }) => {
   const chartData = useMemo(() => {
-    let ptccSum = 0;
-    let tccSum = 0;
-
-    data.forEach((entry) => {
-      ptccSum += entry.ptccCount;
-      tccSum += entry.tccCount;
-      // ptccSum += getRandomInt(4);
-      // tccSum += getRandomInt(4);
-    });
-
     return [
-      { type: "ptcc", count: ptccSum, fill: "var(--color-ptcc)" },
-      { type: "tcc", count: tccSum, fill: "var(--color-tcc)" },
+      { type: "ptcc", count: data?.ptccCount, fill: "var(--color-ptcc)" },
+      { type: "tcc", count: data?.tccCount, fill: "var(--color-tcc)" },
     ];
   }, [data]);
 
@@ -96,10 +86,7 @@ export const PapersGeneralView: React.FC<PapersGeneralViewProps> = ({
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {chartData.reduce(
-                            (prev, curr) => prev + curr.count,
-                            0
-                          )}
+                          {data?.totalPapers}
                         </tspan>
                         <tspan
                           x={viewBox.cx}

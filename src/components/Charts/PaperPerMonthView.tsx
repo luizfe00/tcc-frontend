@@ -1,7 +1,9 @@
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "../ui/chart";
@@ -12,9 +14,9 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { PaperPerMonth } from "@/interfaces/Dashboard";
 import { useCallback } from "react";
 import { getMonth } from "date-fns";
+import { PaperPerMonthQuery } from "@/interfaces/Dashboard";
 
 type PapersPerMonthChart = {
   month: string;
@@ -39,22 +41,18 @@ const monthMap: Record<string, string> = {
 };
 
 const chartConfig = {
-  open: {
-    label: "Abertos",
-    color: "#2563eb",
-  },
   ptcc: {
     label: "PTCC",
-    color: "#60a5fa",
+    color: "hsl(var(--chart-2))",
   },
   tcc: {
     label: "TCC",
-    color: "#60b5da",
+    color: "hsl(var(--chart-3))",
   },
 } satisfies ChartConfig;
 
 export type PaperPerMonthViewProps = {
-  data?: PaperPerMonth[];
+  data?: PaperPerMonthQuery[];
 };
 
 export const PaperPerMonthView: React.FC<PaperPerMonthViewProps> = ({
@@ -92,14 +90,7 @@ export const PaperPerMonthView: React.FC<PaperPerMonthViewProps> = ({
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-          <AreaChart
-            accessibilityLayer
-            data={buildChardData()}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
+          <BarChart data={buildChardData()} accessibilityLayer>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -108,35 +99,22 @@ export const PaperPerMonthView: React.FC<PaperPerMonthViewProps> = ({
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="dot" />}
-            />
-            <Area
+            <YAxis
               dataKey="open"
-              type="natural"
-              fill="var(--color-open)"
-              fillOpacity={0.4}
-              stroke="var(--color-open)"
-              stackId="a"
+              allowDecimals={false}
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
             />
-            <Area
+            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+            <ChartLegend content={<ChartLegendContent />} />
+            <Bar
               dataKey="ptcc"
-              type="natural"
               fill="var(--color-ptcc)"
-              fillOpacity={0.4}
-              stroke="var(--color-ptcc)"
-              stackId="b"
+              radius={[4, 4, 0, 0]}
             />
-            <Area
-              dataKey="tcc"
-              type="natural"
-              fill="var(--color-tcc)"
-              fillOpacity={0.4}
-              stroke="var(--color-tcc)"
-              stackId="c"
-            />
-          </AreaChart>
+            <Bar dataKey="tcc" fill="var(--color-tcc)" radius={[4, 4, 0, 0]} />
+          </BarChart>
         </ChartContainer>
       </CardContent>
     </Card>

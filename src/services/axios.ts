@@ -5,6 +5,7 @@ const api_url = import.meta.env.API_URL ?? "http://localhost:5000/api";
 
 const axiosInstace = axios.create({
   baseURL: api_url,
+  withCredentials: true,
 });
 
 axiosInstace.interceptors.request.use((config) => {

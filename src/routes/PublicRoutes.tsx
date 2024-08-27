@@ -3,6 +3,7 @@ import LoginPage from "../pages/Login";
 import HomePage from "../pages/Home";
 import { PapersPage } from "@/pages/Papers";
 import { DashboardPage } from "@/pages/Dashboard";
+import { ProfessorDetails } from "@/pages/ProfessorDetails";
 
 export const PublicRoutes: RouteObject[] = [
   {
@@ -20,5 +21,9 @@ export const PublicRoutes: RouteObject[] = [
   {
     path: "/dashboard",
     element: <DashboardPage />,
+  },
+  {
+    path: "/professor",
+    element: <ProfessorDetails />,
   },
 ];

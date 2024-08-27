@@ -18,4 +18,4 @@ export const ENDPOINT = {
   UPDATE_PAPER: "paper/:id",
   SUBMIT_PAPER: "approval",
   GET_PENDING_APPROVALS: "approval/pending",
-};
+} as const;
