@@ -2,7 +2,28 @@ import { SignInResponse } from "./ServiceResponse";
 
 export type UserRoles = "STUDENT" | "TEACHER" | "COORDINATOR";
 export type PaperType = "PTCC" | "TCC";
-export type User = SignInResponse;
+
+export type User = {
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  categories: Category[];
+  professorActive?: boolean;
+  papers?: Paper[];
+  themes?: Theme[];
+  interests?: Interest[];
+} & SignInResponse;
+
+export type Category = {
+  id: string;
+  name: string;
+  description: string;
+  themes?: Theme[];
+  users?: User[];
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string;
+};
 
 export type Theme = {
   id: string;

@@ -45,8 +45,16 @@ export default function LoginPage() {
 
   return (
     <div className="h-full flex flex-col justify-center items-center">
-      <Logo />
+      <div className="flex items-center gap-2 mb-2">
+        <img src="/escudo-ufcg.png" alt="Logo UFCG" />
+        <Logo />
+      </div>
       <LoginForm />
+      <div className="text-xs text-gray-500 mt-4 cursor-default">
+        <span>
+          Powered by <span className="font-bold">Eureca</span>
+        </span>
+      </div>
     </div>
   );
 }

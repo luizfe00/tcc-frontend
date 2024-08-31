@@ -1,3 +1,5 @@
+import { User } from "./Models";
+
 export type PaperPerMonthQuery = {
   year: number;
   month: number;
@@ -42,10 +44,10 @@ export type ThemeBI = {
   professorActiveThemeCount: number;
   themesWithMostInterests: ThemeInterestsQuery[];
   themesWithLeastInterests: ThemeInterestsQuery[];
-  professorThemeStats: ProfessorThemeStatsQuery[];
+  professorThemeStats: ProfessorsThemeStatsQuery[];
 };
 
-export type ProfessorThemeStatsQuery = {
+export type ProfessorsThemeStatsQuery = {
   professorId: string;
   professorName: string;
   professorEmail: string;
@@ -99,4 +101,46 @@ export type DashboardBI = {
 export type DashboardBIQuery = {
   startDate: string;
   endDate: string;
+};
+
+export type ProfessorCategoryStatsQuery = {
+  name: string;
+  themeCount: number;
+  paperCount: number;
+  activeThemes: number;
+  inactiveThemes: number;
+  ptccPapers: number;
+  tccPapers: number;
+  completedPapers: number;
+  pendingPapers: number;
+};
+
+export type ProfessorInterestStatsQuery = {
+  totalInterests: number;
+  approvedInterests: number;
+  pendingInterests: number;
+};
+
+export type ProfessorPaperStatsQuery = {
+  totalPapers: number;
+  approvedPapers: number;
+  pendingPapers: number;
+  ptccPapers: number;
+  tccPapers: number;
+  ptccApprovedPapers: number;
+  tccApprovedPapers: number;
+};
+
+export type ProfessorThemeStatsQuery = {
+  totalThemes: number;
+  activeThemes: number;
+  inactiveThemes: number;
+};
+
+export type ProfessorDashboardBIResponse = {
+  professor: User;
+  categories: ProfessorCategoryStatsQuery[];
+  interests: ProfessorInterestStatsQuery;
+  papers: ProfessorPaperStatsQuery;
+  themes: ProfessorThemeStatsQuery;
 };
