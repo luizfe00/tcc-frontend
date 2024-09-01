@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { DashboardActions } from "../DashboardActions/DashboardActions";
+import { DashboardStatusColumn } from "./DashboardStatusColumn/DashboardStatusColumn";
 
 export type DashboardTable = {
   id: string;
@@ -115,11 +116,7 @@ export const dashboardColumns: ColumnDef<DashboardTable>[] = [
     },
     cell: ({ row }) => {
       const user = row.original;
-      return (
-        <span className="block text-center max-w-[6rem]">
-          {user.active ? "Ativo" : "Inativo"}
-        </span>
-      );
+      return <DashboardStatusColumn active={user.active} />;
     },
   },
   {

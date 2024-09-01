@@ -131,10 +131,20 @@ export type ProfessorPaperStatsQuery = {
   tccApprovedPapers: number;
 };
 
+export type ProfessorThemeStatsByMonthQuery = {
+  active: {
+    completed: number;
+    pending: number;
+    rejected: number;
+  };
+  inactive: number;
+};
+
 export type ProfessorThemeStatsQuery = {
   totalThemes: number;
   activeThemes: number;
   inactiveThemes: number;
+  themesByMonth: Record<string, ProfessorThemeStatsByMonthQuery>;
 };
 
 export type ProfessorDashboardBIResponse = {

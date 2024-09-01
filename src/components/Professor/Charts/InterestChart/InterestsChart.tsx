@@ -46,17 +46,14 @@ export const InterestsChart: React.FC<InterestsChartProps> = ({ data }) => {
   );
 
   return (
-    <Card>
-      <CardHeader className="items-center pb-0">
+    <Card className="w-full">
+      <CardHeader className="items-center">
         <CardTitle>Interesses</CardTitle>
         <CardDescription>Resumo dos interesses enviados</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
+      <CardContent className="flex-1 pb-0 w-full">
         {data.totalInterests > 0 ? (
-          <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-square w-full max-w-[300px]"
-          >
+          <ChartContainer config={chartConfig} className="aspect-square w-full">
             <RadialBarChart
               data={chartData}
               endAngle={180}
@@ -95,7 +92,6 @@ export const InterestsChart: React.FC<InterestsChartProps> = ({ data }) => {
                 fill="var(--color-pending)"
                 stackId={1}
                 cornerRadius={5}
-                // label={{ fill: "white", fontSize: 12, position: "insideStart" }}
                 className="stroke-transparent stroke-2"
               />
               <RadialBar
@@ -103,7 +99,6 @@ export const InterestsChart: React.FC<InterestsChartProps> = ({ data }) => {
                 fill="var(--color-approved)"
                 stackId={1}
                 cornerRadius={5}
-                // label={{ fill: "white", fontSize: 12, position: "insideStart" }}
                 className="stroke-transparent stroke-2"
               />
             </RadialBarChart>

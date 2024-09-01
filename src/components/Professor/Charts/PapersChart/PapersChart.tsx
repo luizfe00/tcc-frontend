@@ -58,14 +58,14 @@ const PapersChart: React.FC<PapersChartProps> = ({ data }) => {
   );
 
   return (
-    <Card>
-      <CardHeader className="items-center pb-0">
+    <Card className="w-full">
+      <CardHeader className="items-center">
         <CardTitle>Trabalhos Orientados</CardTitle>
         <CardDescription>Resumo dos trabalhos orientados</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0 w-full min-w-[400px]">
-        <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+      <CardContent className="flex-1 pb-0 w-full">
+        <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
+          <BarChart accessibilityLayer data={chartData} barSize={60}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey={"label"}

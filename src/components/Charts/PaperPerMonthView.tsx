@@ -17,27 +17,13 @@ import {
 import { useCallback } from "react";
 import { getMonth } from "date-fns";
 import { PaperPerMonthQuery } from "@/interfaces/Dashboard";
+import { monthMap } from "@/constants/Months";
 
 type PapersPerMonthChart = {
   month: string;
   open: number;
   ptcc: number;
   tcc: number;
-};
-
-const monthMap: Record<string, string> = {
-  "1": "Janeiro",
-  "2": "Fevereiro",
-  "3": "Março",
-  "4": "Abril",
-  "5": "Maio",
-  "6": "Junho",
-  "7": "Julho",
-  "8": "Agosto",
-  "9": "Setembro",
-  "10": "Outubro",
-  "11": "Novembro",
-  "12": "Dezembro",
 };
 
 const chartConfig = {

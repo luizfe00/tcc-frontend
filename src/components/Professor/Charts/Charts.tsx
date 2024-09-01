@@ -11,12 +11,12 @@ export interface ChartsProps {
 export const Charts: React.FC<ChartsProps> = ({ data }) => {
   return (
     <div className="flex flex-col gap-2 w-full">
-      <ThemesChart />
-      <div className="flex flex-col gap-2 justify-between md:flex-row">
+      <div className="flex flex-col gap-2 md:flex-row">
+        <ThemesChart data={data.themes} />
         <PapersChart data={data.papers} />
         <InterestsChart data={data.interests} />
       </div>
-      <CategoriesCharts data={data.categories} />
+      {/* <CategoriesCharts data={data.categories} /> */}
     </div>
   );
 };

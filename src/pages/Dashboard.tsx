@@ -9,6 +9,7 @@ import {
   DashboardTable,
 } from "@/components/DashboardTable/DashboardColumns/DashboardColumns";
 import { useMemo } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const DashboardPage = () => {
   const { data } = useQuery({
@@ -43,18 +44,22 @@ export const DashboardPage = () => {
   }, [data]);
 
   return (
-    <div className="h-screen p-4 flex flex-col gap-4">
+    <div className="p-4 flex flex-col gap-4">
       <PendingApprovalsList />
-      <div className="flex gap-4">
-        <PaperPerMonthView data={data?.papers.paperPerMonth} />
-        <PapersGeneralView data={data?.papers} />
-      </div>
-      <div>
-        <DashboardDataTable
-          columns={dashboardColumns}
-          data={dashboardTableData}
-        />
-      </div>
+      <Card>
+        <CardContent className="pb-0 pt-4">
+          <div className="flex gap-4">
+            <PaperPerMonthView data={data?.papers.paperPerMonth} />
+            <PapersGeneralView data={data?.papers} />
+          </div>
+          <div>
+            <DashboardDataTable
+              columns={dashboardColumns}
+              data={dashboardTableData}
+            />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

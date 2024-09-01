@@ -84,7 +84,6 @@ export const professorDetailColumns: ColumnDef<ProfessorTable>[] = [
       return (
         <ProfessorStatusFilter
           onChange={(value) => {
-            console.log(value);
             column.setFilterValue(value);
           }}
         />
