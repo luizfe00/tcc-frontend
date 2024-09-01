@@ -1,4 +1,4 @@
-import { PaperStatus } from "@/interfaces/Paper";
+import { PaperStatus, PaperStatusValues } from "@/interfaces/Paper";
 import {
   ClockIcon,
   FileCheckIcon,
@@ -6,9 +6,26 @@ import {
   NotebookPenIcon,
 } from "lucide-react";
 
-export const PaperStatusIcons: Record<PaperStatus, React.ReactElement> = {
-  approved: <FileCheckIcon className="w-4 h-4" />,
-  ongoing: <NotebookPenIcon className="w-4 h-4" />,
-  rejected: <FileXIcon className="w-4 h-4" />,
-  waiting: <ClockIcon className="w-4 h-4" />,
+type PaperStatusMapValue = {
+  icon: React.ReactElement;
+  label: string;
+};
+
+export const PaperStatusIconMap: Record<PaperStatus, PaperStatusMapValue> = {
+  approved: {
+    icon: <FileCheckIcon className="w-4 h-4" />,
+    label: PaperStatusValues.approved,
+  },
+  ongoing: {
+    icon: <NotebookPenIcon className="w-4 h-4" />,
+    label: PaperStatusValues.ongoing,
+  },
+  rejected: {
+    icon: <FileXIcon className="w-4 h-4" />,
+    label: PaperStatusValues.rejected,
+  },
+  waiting: {
+    icon: <ClockIcon className="w-4 h-4" />,
+    label: PaperStatusValues.waiting,
+  },
 };

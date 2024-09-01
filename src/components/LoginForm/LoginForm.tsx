@@ -69,7 +69,7 @@ const LoginForm = () => {
   }
 
   return (
-    <Card className="p-4 w-1/4">
+    <Card className="p-4 w-1/2 lg:w-1/4">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

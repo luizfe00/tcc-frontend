@@ -16,7 +16,7 @@ export const Charts: React.FC<ChartsProps> = ({ data }) => {
         <PapersChart data={data.papers} />
         <InterestsChart data={data.interests} />
       </div>
-      <CategoriesCharts />
+      <CategoriesCharts data={data.categories} />
     </div>
   );
 };

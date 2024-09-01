@@ -21,14 +21,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { getPaperDetails } from "@/services/paperService";
-import {
-  getPaperApprovalStatusIcon,
-  getPaperApprovalStatusLabel,
-} from "@/utils/PaperUtil";
+import { getPaperStatus } from "@/utils/PaperUtil";
+
 import { EyeSlashIcon } from "@heroicons/react/24/outline";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { EyeIcon } from "lucide-react";
+import React from "react";
 
 export interface PaperDetailsModalProps {
   open?: boolean;
@@ -46,6 +45,11 @@ export const PaperDetailsModal = ({
     queryFn: () => getPaperDetails(paperId),
     enabled: !!open && !!paperId,
   });
+
+  const paperStatus = React.useMemo(
+    () => getPaperStatus(data?.approvals ?? []),
+    [data?.approvals]
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -72,12 +76,8 @@ export const PaperDetailsModal = ({
                 {dayjs(data?.theme?.endDate).format("DD/MM/YYYY")}
               </span>
               <Tooltip>
-                <TooltipTrigger>
-                  {getPaperApprovalStatusIcon(data?.approvals ?? [])}
-                </TooltipTrigger>
-                <TooltipContent>
-                  {getPaperApprovalStatusLabel(data?.approvals ?? [])}
-                </TooltipContent>
+                <TooltipTrigger>{paperStatus.icon}</TooltipTrigger>
+                <TooltipContent>{paperStatus.label}</TooltipContent>
               </Tooltip>
             </div>
             <p>{data?.theme?.summary}</p>

@@ -40,6 +40,7 @@ export type Theme = {
   paperProposition: Paper | null;
   paper: Paper | null;
   interests: Interest[];
+  categories: Category[];
 };
 
 export type Interest = {

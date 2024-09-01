@@ -45,7 +45,7 @@ export default function LoginPage() {
 
   return (
     <div className="h-full flex flex-col justify-center items-center">
-      <div className="flex items-center gap-2 mb-2">
+      <div className="flex items-center gap-2 mb-6">
         <img src="/escudo-ufcg.png" alt="Logo UFCG" />
         <Logo />
       </div>

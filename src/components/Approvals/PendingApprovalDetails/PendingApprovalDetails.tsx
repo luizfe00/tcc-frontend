@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Approval } from "@/interfaces";
-import { getPaperApprovalStatusLabel } from "@/utils/PaperUtil";
+import { getPaperStatus } from "@/utils/PaperUtil";
 import { format } from "date-fns";
 import { useState } from "react";
 
@@ -83,7 +83,7 @@ export const PendingApprovalDetails: React.FC<PendingApprovalDetailsProps> = ({
           </p>
           <p className="text-sm">
             <span className="font-medium">Status:</span>{" "}
-            {getPaperApprovalStatusLabel([approval])}
+            {getPaperStatus([approval]).label}
           </p>
         </section>
         <section>

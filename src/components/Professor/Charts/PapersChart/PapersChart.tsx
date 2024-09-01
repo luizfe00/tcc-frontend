@@ -63,7 +63,7 @@ const PapersChart: React.FC<PapersChartProps> = ({ data }) => {
         <CardTitle>Trabalhos Orientados</CardTitle>
         <CardDescription>Resumo dos trabalhos orientados</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0 w-full">
+      <CardContent className="flex-1 pb-0 w-full min-w-[400px]">
         <ChartContainer config={chartConfig}>
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
@@ -74,7 +74,16 @@ const PapersChart: React.FC<PapersChartProps> = ({ data }) => {
               axisLine={false}
               tickFormatter={(value) => value}
             />
-            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+            <ChartTooltip
+              content={
+                <ChartTooltipContent
+                  hideLabel
+                  labelFormatter={(label) =>
+                    label.includes("ptcc") ? "PTCC" : "TCC"
+                  }
+                />
+              }
+            />
             <ChartLegend content={<ChartLegendContent />} />
             <Bar
               dataKey="ptccPending"
