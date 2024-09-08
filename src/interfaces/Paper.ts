@@ -1,13 +1,13 @@
-export type PaperStatus = "ongoing" | "waiting" | "approved" | "rejected";
+export type PaperStatus = "PENDING" | "APPROVED" | "REJECTED" | "COMPLETED";
 export type PaperStatusLabel =
   | "Aprovado"
-  | "Em andamento"
+  | "Concluído"
   | "Rejeitado"
   | "Aguardando";
 
 export const PaperStatusValues: Record<PaperStatus, PaperStatusLabel> = {
-  approved: "Aprovado",
-  ongoing: "Em andamento",
-  rejected: "Rejeitado",
-  waiting: "Aguardando",
+  APPROVED: "Aprovado",
+  PENDING: "Aguardando",
+  REJECTED: "Rejeitado",
+  COMPLETED: "Concluído",
 } as const;

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { ENDPOINT } from "../constants/Endpoints";
 import { useUserStore } from "../user/user.store";
@@ -52,7 +52,10 @@ export default function LoginPage() {
       <LoginForm />
       <div className="text-xs text-gray-500 mt-4 cursor-default">
         <span>
-          Powered by <span className="font-bold">Eureca</span>
+          Powered by{" "}
+          <Link to="https://eureca.sti.ufcg.edu.br/" target="_blank">
+            <span className="font-bold">Eureca</span>
+          </Link>
         </span>
       </div>
     </div>

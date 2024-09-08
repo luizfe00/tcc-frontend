@@ -34,6 +34,9 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export const InterestsChart: React.FC<InterestsChartProps> = ({ data }) => {
+  data.approvedInterests = 6;
+  data.pendingInterests = 9;
+  data.totalInterests = 15;
   const chartData = useMemo(
     () => [
       {

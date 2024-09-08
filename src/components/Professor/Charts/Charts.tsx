@@ -1,5 +1,4 @@
 import { ProfessorDashboardBIResponse } from "@/interfaces/Dashboard";
-import { CategoriesCharts } from "./CategoriesCharts/CategoriesCharts";
 import { InterestsChart } from "./InterestChart/InterestsChart";
 import PapersChart from "./PapersChart/PapersChart";
 import { ThemesChart } from "./ThemesChart/ThemesChart";
