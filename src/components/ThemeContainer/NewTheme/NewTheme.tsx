@@ -14,47 +14,41 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Theme } from "@/interfaces";
+import { addDays } from "date-fns";
+import { DatePicker } from "@/components/DatePicker/DatePicker";
+import { useUserStore } from "@/user/user.store";
 
-export interface NewThemeProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export interface NewThemeForm {
+interface NewThemeFormValues {
   label: string;
+  startDate?: Date;
+  duration: string;
   summary: string;
-  duration: number;
 }
 
-const zodSchema = z.object({
-  label: z
-    .string({ required_error: "É necessário informar um título." })
-    .min(5, "Título deve conter ao menos 5 caracteres."),
-  summary: z
-    .string({ required_error: "É necessário informar um resumo." })
-    .min(10, "Resumo deve conter ao menos 10 caracteres"),
-  duration: z.coerce
-    .number({ required_error: "É necessário informar um período." })
-    .min(30, "Período deve ter ao menos 30 dias de duração"),
-});
+export interface NewThemeFormProps {
+  form: UseFormReturn<NewThemeFormValues>;
+  open?: boolean;
+  handleClose?: (open: boolean) => void;
+  onSubmit?: React.FormEventHandler<HTMLFormElement>;
+  theme?: Theme;
+}
 
-export const NewTheme = ({ open = false, onOpenChange }: NewThemeProps) => {
-  const form = useForm<z.infer<typeof zodSchema>>({
-    resolver: zodResolver(zodSchema),
-  });
-
-  const onSubmit = async (data: NewThemeForm) => {
-    console.log(data);
-  };
+export const NewThemeForm = ({
+  form,
+  open = false,
+  handleClose,
+  onSubmit = () => {},
+  theme,
+}: NewThemeFormProps) => {
+  const user = useUserStore((state) => state.user);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Criar novo tema</DialogTitle>
@@ -65,40 +59,69 @@ export const NewTheme = ({ open = false, onOpenChange }: NewThemeProps) => {
         </DialogHeader>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={onSubmit}
             className="space-y-3 flex flex-col justify-center"
           >
-            <div className="flex gap-2 w-full">
-              <FormField
-                control={form.control}
-                name="label"
-                render={({ field }) => (
-                  <FormItem className="grow">
-                    <FormLabel>Titulo</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Informe um titulo pro seu tema"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <FormField
+              control={form.control}
+              name="label"
+              render={({ field }) => (
+                <FormItem className="grow">
+                  <FormLabel>Titulo</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Informe um titulo pro seu tema"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="grow flex gap-2">
+              {user?.role === "STUDENT" && (
+                <FormField
+                  control={form.control}
+                  name="startDate"
+                  render={({ field }) => (
+                    <FormItem className="grow">
+                      <FormLabel>Data de Início</FormLabel>
+                      <FormControl>
+                        <DatePicker
+                          {...field}
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          datePickerProps={{
+                            disabled: {
+                              before: addDays(new Date(), 1),
+                            },
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
               <FormField
                 control={form.control}
                 name="duration"
                 render={({ field }) => (
-                  <FormItem className="w-1/5">
+                  <FormItem className="w-1/3">
                     <FormLabel>Duração</FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input placeholder="Dias" type="number" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
+            <FormDescription>
+              {user?.role === "STUDENT"
+                ? "Defina a data de início e a duração para produção do seu tema em dias."
+                : "Defina a duração para produção do seu tema em dias."}
+            </FormDescription>
             <FormField
               control={form.control}
               name="summary"
@@ -116,7 +139,7 @@ export const NewTheme = ({ open = false, onOpenChange }: NewThemeProps) => {
               )}
             />
             <Button type="submit" size={"sm"}>
-              Criar
+              {theme ? "Salvar" : "Criar"}
             </Button>
           </form>
         </Form>

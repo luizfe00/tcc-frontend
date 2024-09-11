@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   getAllProfessorThemes,
@@ -6,24 +7,23 @@ import {
 } from "../services/themeService";
 import Navbar from "@/components/Navbar/Navbar";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   ThemeContainerTitle,
   ThemeSearchList,
 } from "@/components/ThemeContainer";
 import { useUserStore } from "@/user/user.store";
 import { OwnThemePresentation } from "@/components/ThemeContainer/OwnThemePresentation/OwnThemePresentation";
-import { useState } from "react";
-import { NewTheme } from "@/components/ThemeContainer/NewTheme/NewTheme";
+import { NewTheme } from "@/components/ThemeContainer/NewTheme/NewTheme.container";
 import { InterestList } from "@/components/ThemeContainer/InterestList/InterestList";
 import { getUserInterests } from "@/services/interestService";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function HomePage() {
   const user = useUserStore((state) => state.user);
   const [showNewThemeModal, setShowNewThemeModal] = useState(false);
 
   const { data } = useQuery({
-    queryKey: ["studentThemes"],
+    queryKey: ["allThemes"],
     queryFn:
       user?.role === "STUDENT" ? getAllProfessorThemes : getAllStudentThemes,
   });
@@ -37,24 +37,6 @@ export default function HomePage() {
     queryKey: ["userInterests"],
     queryFn: getUserInterests,
   });
-
-  const themeOptionActions = () => {
-    const options = [];
-    const addNewThemeAction = (
-      <Button
-        key="add-theme"
-        variant={"outline"}
-        size={"icon"}
-        className="rounded-full h-8 w-8"
-        onClick={() => setShowNewThemeModal(true)}
-      >
-        +
-      </Button>
-    );
-    if (!(user?.role === "STUDENT" && userThemes && userThemes?.length > 0))
-      options.push(addNewThemeAction);
-    return options;
-  };
 
   return (
     <div className="h-screen flex flex-col">
@@ -73,21 +55,25 @@ export default function HomePage() {
                     className="w-full"
                   />
                 </div>
-                <ThemeSearchList
-                  onPress={(theme) => console.log({ theme })}
-                  themes={data}
-                />
+                <ScrollArea className="h-full flex-1">
+                  <div className="py-2 flex flex-col gap-2 max-h-[300px]">
+                    <ThemeSearchList
+                      themes={data}
+                      orienteePaperThemeId={user?.orienteePaper?.themeId}
+                    />
+                  </div>
+                </ScrollArea>
               </div>
             </div>
           </div>
           <div className="col-start-4 col-end-6">
             <div className="flex flex-col h-full gap-2">
-              <div>
+              <div className="h-1/2">
                 <ThemeContainerTitle
                   label="Meus Temas"
-                  actions={themeOptionActions}
+                  onClickNewTheme={() => setShowNewThemeModal(true)}
                 />
-                <div className="flex flex-col gap-y-4">
+                <div className="flex flex-col gap-y-2 h-4/5 w-full">
                   {userThemes && userThemes?.length > 1 && (
                     <Input
                       type="email"
@@ -95,14 +81,22 @@ export default function HomePage() {
                       className="w-full"
                     />
                   )}
-                  {userThemes?.map((theme) => (
-                    <OwnThemePresentation key={theme.label} theme={theme} />
-                  ))}
+                  <ScrollArea className="h-full flex-1">
+                    <div className="py-2 flex flex-col gap-2 max-h-[300px]">
+                      {userThemes?.map((theme) => (
+                        <OwnThemePresentation key={theme.id} theme={theme} />
+                      ))}
+                    </div>
+                  </ScrollArea>
                 </div>
               </div>
-              <div>
+              <div className="h-1/2">
                 <ThemeContainerTitle label="Meus Interesses" />
-                <InterestList interests={userInterests} />
+                <InterestList
+                  interests={userInterests}
+                  owner
+                  readonly={!!user?.orienteePaper}
+                />
               </div>
             </div>
           </div>

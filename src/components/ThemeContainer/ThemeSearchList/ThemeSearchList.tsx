@@ -5,10 +5,13 @@ import { ThemeCard } from "../ThemeCard/ThemeCard";
 
 export interface ThemeSearchListProps {
   themes?: Theme[];
-  onPress?: (theme: Theme) => void;
+  orienteePaperThemeId?: string;
 }
 
-export const ThemeSearchList = ({ onPress, themes }: ThemeSearchListProps) => {
+export const ThemeSearchList = ({
+  themes,
+  orienteePaperThemeId,
+}: ThemeSearchListProps) => {
   return (
     <div className="flex flex-col h-full gap-y-2">
       <ScrollArea className="flex-1">
@@ -17,7 +20,7 @@ export const ThemeSearchList = ({ onPress, themes }: ThemeSearchListProps) => {
             <ThemeCard
               key={theme.label + theme.ownerId}
               theme={theme}
-              onClick={onPress}
+              orienteePaperThemeId={orienteePaperThemeId}
             />
           ))}
         </div>

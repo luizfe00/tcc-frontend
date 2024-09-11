@@ -7,4 +7,15 @@ export const ENDPOINT = {
   GET_PROFESSOR_THEMES: "theme/professor",
   ME: "me",
   GET_USER_INTERESTS: "interest",
-};
+  APPROVE_INTEREST: "interest/approve",
+  GET_USER_PAPERS: "paper",
+  CREATE_STAGE: "stage",
+  LIST_PAPER_STAGES: "stage/paper/:id",
+  LIST_PENDING_FEEDBACK: "stage/pending",
+  UPDATE_STAGE: "stage/:id",
+  GET_PAPER_DETAILS: "paper/:id",
+  CREATE_INTEREST: "interest",
+  UPDATE_PAPER: "paper/:id",
+  SUBMIT_PAPER: "approval",
+  GET_PENDING_APPROVALS: "approval/pending",
+} as const;

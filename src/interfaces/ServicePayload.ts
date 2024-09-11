@@ -3,8 +3,39 @@ export type ServicePayload = {
   password: string;
 };
 
-export type CreateThemePayload = {
+export type ApproveInterestPayload = {
+  documentUrl?: string;
+  professorId: string;
+  studentId: string;
+  interestId: string;
+  themeId: string;
+};
+
+export type CreateStagePayload = {
   label: string;
-  duration: number;
+  paperId: string;
+  message?: string;
+};
+
+export type UpdateStagePayload = {
+  id: string;
+  viewed?: boolean;
+  feedback?: string;
+};
+
+export type CreateNewThemePayload = {
   summary: string;
+  label: string;
+  startDate?: string;
+  duration: number;
+};
+
+export type CreateNewInterestPayload = {
+  themeId: string;
+  text: string;
+};
+
+export type UpdatePaperPayload = {
+  documentUrl?: string;
+  paperId: string;
 };

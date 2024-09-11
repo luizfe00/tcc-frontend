@@ -1,6 +1,7 @@
-import { GetThemesResponse } from "@/interfaces";
+import { CreateNewThemePayload, GetThemesResponse, Theme } from "@/interfaces";
 import { ENDPOINT } from "../constants/Endpoints";
 import axiosInstace from "./axios";
+import { useUserStore } from "@/user/user.store";
 
 export const getAllStudentThemes = async () => {
   const { data } = await axiosInstace.get<GetThemesResponse>(
@@ -23,5 +24,15 @@ export const getUserThemes = async () => {
     `/${ENDPOINT.GET_USER_THEMES}`
   );
 
+  useUserStore.setState({ themes: data });
+
+  return data;
+};
+
+export const createnewTheme = async (theme: CreateNewThemePayload) => {
+  const { data } = await axiosInstace.post<Theme>(
+    `/${ENDPOINT.CREATE_THEME}`,
+    theme
+  );
   return data;
 };
