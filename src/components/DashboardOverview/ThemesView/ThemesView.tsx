@@ -6,6 +6,7 @@ import { papersTableColumns, ThemesTable } from "./ThemesTableColumns";
 import { useCallback, useMemo } from "react";
 import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
+import { addDays } from "date-fns";
 
 export const ThemesView = () => {
   const { data } = useQuery({
@@ -22,7 +23,7 @@ export const ThemesView = () => {
       createdAt: theme.createdAt,
       updatedAt: theme.updatedAt,
       startDate: theme.startDate,
-      endDate: theme.endDate,
+      endDate: addDays(theme.startDate, theme.duration).toISOString(),
       label: theme.label,
       summary: theme.summary,
       owner: theme.owner,

@@ -13,10 +13,9 @@ export const ProfessorStatusFilter = ({
   const [selectedStatus, setSelectedStatus] = React.useState<string>("");
 
   const statuses = [
-    { value: PaperStatusValues.approved, label: "Aprovado" },
-    { value: PaperStatusValues.rejected, label: "Rejeitado" },
-    { value: PaperStatusValues.waiting, label: "Pendente" },
-    { value: PaperStatusValues.ongoing, label: "Em andamento" },
+    { value: PaperStatusValues.APPROVED, label: "Aprovado" },
+    { value: PaperStatusValues.REJECTED, label: "Rejeitado" },
+    { value: PaperStatusValues.PENDING, label: "Pendente" },
   ];
   return (
     <div className="flex items-center justify-center gap-2">

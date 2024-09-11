@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { useUserStore } from "../user/user.store";
 
-const api_url = import.meta.env.API_URL ?? "http://localhost:5000/api";
+const api_url = import.meta.env.VITE_API_URL ?? "http://localhost:5000/api";
 
 const axiosInstace = axios.create({
   baseURL: api_url,

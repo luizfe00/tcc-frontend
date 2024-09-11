@@ -10,6 +10,8 @@ import {
 import { useMemo } from "react";
 import dayjs from "dayjs";
 import { getPaperStatus } from "@/utils/PaperUtil";
+import { formatDate } from "@/utils/DateUtil";
+import { addDays } from "date-fns";
 
 export interface ProfessorOverviewProps {
   data?: ProfessorDashboardBIResponse;
@@ -22,9 +24,9 @@ export const ProfessorOverview: React.FC<ProfessorOverviewProps> = ({
     if (!data || !data?.professor?.themes) return [];
     return data?.professor?.themes?.map((detail) => ({
       id: detail.id,
-      dateRange: `de ${dayjs(detail?.startDate).format(
-        "DD/MM/YYYY"
-      )} até ${dayjs(detail?.endDate).format("DD/MM/YYYY")}`,
+      dateRange: `de ${formatDate(detail?.startDate)} até ${formatDate(
+        addDays(detail.startDate, detail.duration).toISOString()
+      )}`,
       themeName: detail.label,
       category: detail.categories
         .flatMap((category) => category.name)
