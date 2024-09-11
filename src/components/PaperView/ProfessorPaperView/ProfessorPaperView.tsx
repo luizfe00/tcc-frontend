@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Paper } from "@/interfaces";
 import { getPendingFeedback } from "@/services/stageService";
 import { useQuery } from "@tanstack/react-query";
+import { addDays, format } from "date-fns";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 
@@ -27,7 +28,10 @@ export const ProfessorPaperView = ({
     const dataTable: PaperTable[] = papers.map((paper) => ({
       dateRange: `de ${dayjs(paper.theme?.startDate).format(
         "DD/MM/YYYY"
-      )} até ${dayjs(paper.theme?.endDate).format("DD/MM/YYYY")}`,
+      )} até ${format(
+        addDays(paper.theme?.startDate ?? "", paper.theme?.duration ?? 30),
+        "dd/MM/yyyy"
+      )}`,
       id: paper.id ?? "",
       link: paper.documentUrl ?? "",
       orientee: `${paper.orientee?.name} - ${paper.orientee?.email}`,

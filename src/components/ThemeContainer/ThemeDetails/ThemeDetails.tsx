@@ -21,7 +21,7 @@ import { CreateNewInterestPayload, Interest, Theme } from "@/interfaces";
 import { createInterest } from "@/services/interestService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -30,6 +30,7 @@ export interface ThemeDetailsDialogProps {
   onOpenChange?: (open: boolean) => void;
   theme: Theme;
   disabled?: boolean;
+  disabledByStudentInterest?: boolean;
 }
 
 const zodSchema = z.object({
@@ -43,6 +44,7 @@ export const ThemeDetailsDialog: React.FC<ThemeDetailsDialogProps> = ({
   open,
   theme,
   disabled = false,
+  disabledByStudentInterest = false,
 }: ThemeDetailsDialogProps) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -96,7 +98,7 @@ export const ThemeDetailsDialog: React.FC<ThemeDetailsDialogProps> = ({
             </span>
             <span>
               De {format(theme.startDate, "dd/MM/yyyy")} até{" "}
-              {format(theme.endDate, "dd/MM/yyyy")}
+              {format(addDays(theme.startDate, theme.duration), "dd/MM/yyyy")}
             </span>
           </DialogDescription>
         </DialogHeader>
@@ -110,17 +112,31 @@ export const ThemeDetailsDialog: React.FC<ThemeDetailsDialogProps> = ({
                 <FormItem className="grow">
                   <FormLabel>Mensagem</FormLabel>
                   <FormControl>
-                    <Textarea disabled={disabled} {...field} />
+                    <Textarea
+                      disabled={disabled || disabledByStudentInterest}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                   <FormDescription>
-                    Envie uma mensagem demonstrando seu interesse pelo tema
+                    {disabledByStudentInterest
+                      ? "Você já possui um interesse cadastrado"
+                      : "Envie uma mensagem demonstrando seu interesse pelo tema"}
                   </FormDescription>
                 </FormItem>
               )}
             />
             <div className="flex justify-end mt-2">
-              <Button variant="outline" type="submit" disabled={disabled}>
+              <Button
+                variant="outline"
+                type="submit"
+                disabled={disabled || disabledByStudentInterest}
+                title={
+                  disabledByStudentInterest
+                    ? "Você já possui um interesse cadastrado"
+                    : "Enviar interesse pelo tema"
+                }
+              >
                 Enviar interesse
               </Button>
             </div>

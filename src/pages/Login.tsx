@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import { ENDPOINT } from "../constants/Endpoints";
 import { useUserStore } from "../user/user.store";
@@ -23,11 +23,6 @@ export default function LoginPage() {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(data);
-        if (data.role === "COORDINATOR") {
-          navigate("/dashboard");
-        } else {
-          navigate("/home");
-        }
       } catch (error) {
         console.log(error);
         sessionStorage.removeItem("tcc_user_token");
@@ -42,6 +37,15 @@ export default function LoginPage() {
       getUserFromStorage(payload);
     }
   }, [navigate, setUser, user]);
+
+  if (user) {
+    return (
+      <Navigate
+        to={user.role === "COORDINATOR" ? "/dashboard" : "/home"}
+        replace
+      />
+    );
+  }
 
   return (
     <div className="h-full flex flex-col justify-center items-center">

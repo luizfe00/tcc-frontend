@@ -11,7 +11,7 @@ import { Paper } from "@/interfaces";
 import { updatePaper } from "@/services/paperService";
 import { cn } from "@/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 import { EditIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -70,11 +70,11 @@ export const PaperDetails = ({ paper }: PaperDetailsProps) => {
   };
 
   return (
-    <div className="mb-6">
-      <span className="block w-full font-bold text-center text-lg">
+    <div className="mb-6 max-w-[600px]">
+      <span className="block w-full font-bold text-center text-lg ">
         {paper.theme?.label}
       </span>
-      <div className="flex justify-between mt-4">
+      <div className="flex justify-between mt-8">
         <div className="flex flex-col">
           <span className="font-semibold text-sm">
             Orientador:{" "}
@@ -95,7 +95,13 @@ export const PaperDetails = ({ paper }: PaperDetailsProps) => {
           <span className="font-semibold text-sm">
             Fim:{" "}
             <span className="font-normal">
-              {format(paper.theme?.endDate ?? "", "dd/MM/yyyy")}
+              {format(
+                addDays(
+                  paper.theme?.startDate ?? "",
+                  paper.theme?.duration ?? 30
+                ),
+                "dd/MM/yyyy"
+              )}
             </span>
           </span>
         </div>
@@ -124,7 +130,7 @@ export const PaperDetails = ({ paper }: PaperDetailsProps) => {
               value={documentLink}
               onChange={(event) => setDocumentLink(event.target.value)}
             />
-          ) : (
+          ) : paper.documentUrl ? (
             <Button
               variant={"link"}
               className={cn(!showLinkInput && "pl-0", "text-sm")}
@@ -132,6 +138,10 @@ export const PaperDetails = ({ paper }: PaperDetailsProps) => {
             >
               {paper.documentUrl}
             </Button>
+          ) : (
+            <span className="block my-auto text-sm">
+              Não há link para o documento
+            </span>
           )}
           <Button
             variant={showLinkInput ? "default" : "ghost"}

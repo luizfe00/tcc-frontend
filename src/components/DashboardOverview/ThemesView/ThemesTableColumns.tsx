@@ -1,4 +1,5 @@
 import { PaperType, User } from "@/interfaces";
+import { formatDate } from "@/utils/DateUtil";
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
 
 export type ThemesTable = {
@@ -74,7 +75,9 @@ export const papersTableColumns: ColumnDef<ThemesTable>[] = [
     header: "Início",
     cell: ({ row }) => {
       const { startDate } = row.original;
-      return <span className="text-sm font-medium">{startDate}</span>;
+      return (
+        <span className="text-sm font-medium">{formatDate(startDate)}</span>
+      );
     },
   },
   {
@@ -82,7 +85,7 @@ export const papersTableColumns: ColumnDef<ThemesTable>[] = [
     header: "Fim",
     cell: ({ row }) => {
       const { endDate } = row.original;
-      return <span className="text-sm font-medium">{endDate}</span>;
+      return <span className="text-sm font-medium">{formatDate(endDate)}</span>;
     },
   },
   {
@@ -90,7 +93,9 @@ export const papersTableColumns: ColumnDef<ThemesTable>[] = [
     header: "Criado em",
     cell: ({ row }) => {
       const { createdAt } = row.original;
-      return <span className="text-sm font-medium">{createdAt}</span>;
+      return (
+        <span className="text-sm font-medium">{formatDate(createdAt)}</span>
+      );
     },
   },
 ];

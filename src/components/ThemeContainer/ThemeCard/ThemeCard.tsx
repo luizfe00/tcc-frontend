@@ -7,7 +7,8 @@ import { ThemeDetailsDialog } from "../ThemeDetails/ThemeDetails";
 import { cn } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { EditIcon } from "lucide-react";
-import { NewTheme } from "../NewTheme/NewTheme";
+import { NewTheme } from "../NewTheme/NewTheme.container";
+import { useUserStore } from "@/user/user.store";
 
 export interface ThemeCardProps {
   theme: Theme;
@@ -22,6 +23,7 @@ export const ThemeCard = ({
   orienteePaperThemeId,
   onClick = () => {},
 }: ThemeCardProps) => {
+  const userState = useUserStore((state) => state);
   const [showDetails, setShowDetails] = useState(false);
   const [showThemeForm, setShowThemeForm] = useState(false);
 
@@ -34,13 +36,15 @@ export const ThemeCard = ({
     setShowDetails(true);
   };
 
-  const studentPaperTheme = orienteePaperThemeId === theme.id;
+  const studentPaperTheme = userState.user?.orienteePaper?.id === theme.id;
 
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
     setShowThemeForm(true);
   };
+
+  const showEditButton = owner && !userState.user?.orienteePaper?.id;
 
   return (
     <>
@@ -57,7 +61,7 @@ export const ThemeCard = ({
             <Separator orientation="vertical" className="h-4" />
             <span className="font-semibold">{theme.label}</span>
           </div>
-          {owner ? (
+          {showEditButton ? (
             <Button
               variant="outline"
               size="icon"
@@ -81,6 +85,9 @@ export const ThemeCard = ({
           onOpenChange={setShowDetails}
           theme={theme}
           disabled={!!orienteePaperThemeId}
+          disabledByStudentInterest={
+            userState.user?.role === "STUDENT" && userState.interests.length > 0
+          }
         />
       )}
       {showThemeForm && (

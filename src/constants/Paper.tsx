@@ -1,9 +1,9 @@
 import { PaperStatus, PaperStatusValues } from "@/interfaces/Paper";
 import {
+  BookCheckIcon,
   ClockIcon,
   FileCheckIcon,
   FileXIcon,
-  NotebookPenIcon,
 } from "lucide-react";
 
 type PaperStatusMapValue = {
@@ -12,20 +12,20 @@ type PaperStatusMapValue = {
 };
 
 export const PaperStatusIconMap: Record<PaperStatus, PaperStatusMapValue> = {
-  approved: {
+  APPROVED: {
     icon: <FileCheckIcon className="w-4 h-4" />,
-    label: PaperStatusValues.approved,
+    label: PaperStatusValues.APPROVED,
   },
-  ongoing: {
-    icon: <NotebookPenIcon className="w-4 h-4" />,
-    label: PaperStatusValues.ongoing,
-  },
-  rejected: {
-    icon: <FileXIcon className="w-4 h-4" />,
-    label: PaperStatusValues.rejected,
-  },
-  waiting: {
+  PENDING: {
     icon: <ClockIcon className="w-4 h-4" />,
-    label: PaperStatusValues.waiting,
+    label: PaperStatusValues.PENDING,
+  },
+  REJECTED: {
+    icon: <FileXIcon className="w-4 h-4" />,
+    label: PaperStatusValues.REJECTED,
+  },
+  COMPLETED: {
+    icon: <BookCheckIcon className="w-4 h-4" />,
+    label: PaperStatusValues.COMPLETED,
   },
 };

@@ -7,18 +7,16 @@ import {
 } from "../services/themeService";
 import Navbar from "@/components/Navbar/Navbar";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   ThemeContainerTitle,
   ThemeSearchList,
 } from "@/components/ThemeContainer";
 import { useUserStore } from "@/user/user.store";
 import { OwnThemePresentation } from "@/components/ThemeContainer/OwnThemePresentation/OwnThemePresentation";
-import { NewTheme } from "@/components/ThemeContainer/NewTheme/NewTheme";
+import { NewTheme } from "@/components/ThemeContainer/NewTheme/NewTheme.container";
 import { InterestList } from "@/components/ThemeContainer/InterestList/InterestList";
 import { getUserInterests } from "@/services/interestService";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { PlusIcon } from "@heroicons/react/24/outline";
 
 export default function HomePage() {
   const user = useUserStore((state) => state.user);
@@ -40,24 +38,6 @@ export default function HomePage() {
     queryFn: getUserInterests,
   });
 
-  const themeOptionActions = () => {
-    const options = [];
-    const addNewThemeAction = (
-      <Button
-        key="add-theme"
-        variant={"outline"}
-        size={"icon"}
-        className="rounded-full h-8 w-8"
-        onClick={() => setShowNewThemeModal(true)}
-      >
-        <PlusIcon className="w-4" />
-      </Button>
-    );
-    if (!(user?.role === "STUDENT" && userThemes && userThemes?.length > 0))
-      options.push(addNewThemeAction);
-    return options;
-  };
-
   return (
     <div className="h-screen flex flex-col">
       <Navbar />
@@ -75,10 +55,14 @@ export default function HomePage() {
                     className="w-full"
                   />
                 </div>
-                <ThemeSearchList
-                  themes={data}
-                  orienteePaperThemeId={user?.orienteePaper?.themeId}
-                />
+                <ScrollArea className="h-full flex-1">
+                  <div className="py-2 flex flex-col gap-2 max-h-[300px]">
+                    <ThemeSearchList
+                      themes={data}
+                      orienteePaperThemeId={user?.orienteePaper?.themeId}
+                    />
+                  </div>
+                </ScrollArea>
               </div>
             </div>
           </div>
@@ -87,7 +71,7 @@ export default function HomePage() {
               <div className="h-1/2">
                 <ThemeContainerTitle
                   label="Meus Temas"
-                  actions={themeOptionActions}
+                  onClickNewTheme={() => setShowNewThemeModal(true)}
                 />
                 <div className="flex flex-col gap-y-2 h-4/5 w-full">
                   {userThemes && userThemes?.length > 1 && (
@@ -100,7 +84,7 @@ export default function HomePage() {
                   <ScrollArea className="h-full flex-1">
                     <div className="py-2 flex flex-col gap-2 max-h-[300px]">
                       {userThemes?.map((theme) => (
-                        <OwnThemePresentation key={theme.label} theme={theme} />
+                        <OwnThemePresentation key={theme.id} theme={theme} />
                       ))}
                     </div>
                   </ScrollArea>

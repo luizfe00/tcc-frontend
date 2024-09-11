@@ -7,14 +7,6 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -23,10 +15,9 @@ import {
 import { getPaperDetails } from "@/services/paperService";
 import { getPaperStatus } from "@/utils/PaperUtil";
 
-import { EyeSlashIcon } from "@heroicons/react/24/outline";
 import { useQuery } from "@tanstack/react-query";
+import { addDays, format } from "date-fns";
 import dayjs from "dayjs";
-import { EyeIcon } from "lucide-react";
 import React from "react";
 
 export interface PaperDetailsModalProps {
@@ -57,7 +48,7 @@ export const PaperDetailsModal = ({
         <DialogHeader>
           <DialogTitle>{data?.theme?.label}</DialogTitle>
           <DialogDescription>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mt-4">
               <span>
                 {data?.orientee?.name} - {data?.orientee?.email}
               </span>
@@ -73,15 +64,24 @@ export const PaperDetailsModal = ({
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium">
                 De {dayjs(data?.theme?.startDate).format("DD/MM/YYYY")} até{" "}
-                {dayjs(data?.theme?.endDate).format("DD/MM/YYYY")}
+                {data?.theme?.startDate && data?.theme?.duration
+                  ? format(
+                      addDays(
+                        data?.theme?.startDate ?? "",
+                        data?.theme?.duration ?? 30
+                      ),
+                      "dd/MM/yyyy"
+                    )
+                  : "Não informado"}
               </span>
               <Tooltip>
                 <TooltipTrigger>{paperStatus.icon}</TooltipTrigger>
                 <TooltipContent>{paperStatus.label}</TooltipContent>
               </Tooltip>
             </div>
+            <Separator className="mt-2" />
             <p>{data?.theme?.summary}</p>
-            <div className="mt-2">
+            {/* <div className="mt-2">
               <span className="text-gray-500 font-medium">Envios</span>
               <Separator className="mt-1 mb-2" />
               <Table>
@@ -122,7 +122,7 @@ export const PaperDetailsModal = ({
                   )}
                 </TableBody>
               </Table>
-            </div>
+            </div> */}
           </div>
         </TooltipProvider>
       </DialogContent>

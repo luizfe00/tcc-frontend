@@ -26,8 +26,8 @@ export type UpdateStagePayload = {
 export type CreateNewThemePayload = {
   summary: string;
   label: string;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  duration: number;
 };
 
 export type CreateNewInterestPayload = {

@@ -1,4 +1,5 @@
 import { PaperType, User, Theme } from "@/interfaces";
+import { formatDate } from "@/utils/DateUtil";
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
 
 export type PapersTable = {
@@ -72,7 +73,9 @@ export const papersTableColumns: ColumnDef<PapersTable>[] = [
     header: "Criado em",
     cell: ({ row }) => {
       const { createdAt } = row.original;
-      return <span className="text-sm font-medium">{createdAt}</span>;
+      return (
+        <span className="text-sm font-medium">{formatDate(createdAt)}</span>
+      );
     },
   },
 ];

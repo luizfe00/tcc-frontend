@@ -1,9 +1,28 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { PublicRoutes } from "./routes/PublicRoutes";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
+import { PublicRoutes } from "./routes/Routes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useUserStore } from "./user/user.store";
 
 function App() {
-  const router = createBrowserRouter(PublicRoutes);
+  const user = useUserStore((state) => state.user);
+  const router = createBrowserRouter([
+    ...PublicRoutes,
+    {
+      path: "*",
+      element: (
+        <Navigate
+          to={
+            user ? (user.role === "COORDINATOR" ? "/dashboard" : "/home") : "/"
+          }
+          replace
+        />
+      ),
+    },
+  ]);
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {

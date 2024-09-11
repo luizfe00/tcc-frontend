@@ -6,11 +6,13 @@ import {
   CreateNewInterestPayload,
   Interest,
 } from "@/interfaces";
+import { useUserStore } from "@/user/user.store";
 
 export const getUserInterests = async () => {
   const { data } = await axiosInstace.get<Interest[]>(
     `/${ENDPOINT.GET_USER_INTERESTS}`
   );
+  useUserStore.getState().setInterests(data);
   return data;
 };
 

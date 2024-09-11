@@ -45,7 +45,6 @@ export const PaperActions = ({
     },
   });
 
-  console.log({ approvals });
   const pendingApproval = useMemo(() => {
     if (!approvals.length || approvals.length === 2) return false;
     return approvals.some((approval) => approval.approval == null);
