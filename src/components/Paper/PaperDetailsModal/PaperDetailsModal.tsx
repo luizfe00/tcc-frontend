@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -17,8 +18,7 @@ import { getPaperStatus } from "@/utils/PaperUtil";
 
 import { useQuery } from "@tanstack/react-query";
 import { addDays, format } from "date-fns";
-import dayjs from "dayjs";
-import React from "react";
+import { formatDate } from "@/utils/DateUtil";
 
 export interface PaperDetailsModalProps {
   open?: boolean;
@@ -54,16 +54,14 @@ export const PaperDetailsModal = ({
               </span>
               <span>{data?.type}</span>
             </div>
-            <span className="text-xs">
-              {dayjs(data?.createdAt).format("DD/MM/YYYY")}
-            </span>
+            <span className="text-xs">{formatDate(data?.createdAt)}</span>
           </DialogDescription>
         </DialogHeader>
         <TooltipProvider>
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium">
-                De {dayjs(data?.theme?.startDate).format("DD/MM/YYYY")} até{" "}
+                De {formatDate(data?.theme?.startDate)} até{" "}
                 {data?.theme?.startDate && data?.theme?.duration
                   ? format(
                       addDays(

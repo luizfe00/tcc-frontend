@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -26,6 +25,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updatePendingFeedback } from "@/services/stageService";
 import { toast } from "@/components/ui/use-toast";
 import React from "react";
+import { formatDate } from "@/utils/DateUtil";
 
 export interface PendingStageDetailsProps {
   open?: boolean;
@@ -85,8 +85,7 @@ export const PendingStageDetails = ({
         <DialogHeader>
           <DialogTitle>{stage?.paper.theme?.label}</DialogTitle>
           <DialogDescription>
-            {stage?.paper.orientee?.name} -{" "}
-            {dayjs(stage?.createdAt).format("DD/MM/YYYY")}
+            {stage?.paper.orientee?.name} - {formatDate(stage?.createdAt)}
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-y-4">

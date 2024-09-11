@@ -8,7 +8,6 @@ import {
   ProfessorTable,
 } from "./ProfessorTable/ProfessorTableColumns/ProfessorTableColumns";
 import { useMemo } from "react";
-import dayjs from "dayjs";
 import { getPaperStatus } from "@/utils/PaperUtil";
 import { formatDate } from "@/utils/DateUtil";
 import { addDays } from "date-fns";

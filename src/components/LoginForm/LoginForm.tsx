@@ -48,7 +48,6 @@ const LoginForm = () => {
       );
       sessionStorage.setItem("tcc_user_token", data.token);
       setUser(data);
-      console.log(data);
       if (data.role === "COORDINATOR") {
         navigate("/dashboard");
       } else {
@@ -64,7 +63,6 @@ const LoginForm = () => {
         description: "Verifique suas credenciais e tente novamente.",
         variant: "destructive",
       });
-      console.log(error);
     }
   }
 
@@ -72,7 +70,10 @@ const LoginForm = () => {
     <Card className="p-4 w-1/2 lg:w-1/4">
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit(onSubmit)(e);
+          }}
           className="space-y-4 flex flex-col justify-center"
         >
           <FormField

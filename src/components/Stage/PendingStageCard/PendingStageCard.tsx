@@ -1,11 +1,11 @@
 import { Card } from "@/components/ui/card";
 import { PaperStage } from "@/interfaces";
-import dayjs from "dayjs";
 import { PendingStageDetails } from "../PendingStageDetails/PendingStageDetails";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { updatePendingFeedback } from "@/services/stageService";
 import { toast } from "@/components/ui/use-toast";
+import { formatDate } from "@/utils/DateUtil";
 
 export interface PendingStageCardProps {
   stage?: PaperStage;
@@ -45,9 +45,7 @@ export const PendingStageCard = ({ stage }: PendingStageCardProps) => {
           <span className="text-sm font-medium">
             {stage?.paper?.theme?.label}
           </span>
-          <span className="text-xs">
-            {dayjs(stage?.createdAt).format("DD/MM/YYYY")}
-          </span>
+          <span className="text-xs">{formatDate(stage?.createdAt)}</span>
         </div>
         <div>
           <span className="text-xs font-medium">

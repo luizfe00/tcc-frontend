@@ -7,9 +7,9 @@ import { PendingStageCard } from "@/components/Stage/PendingStageCard/PendingSta
 import { Separator } from "@/components/ui/separator";
 import { Paper } from "@/interfaces";
 import { getPendingFeedback } from "@/services/stageService";
+import { formatDate } from "@/utils/DateUtil";
 import { useQuery } from "@tanstack/react-query";
 import { addDays, format } from "date-fns";
-import dayjs from "dayjs";
 import { useMemo } from "react";
 
 export interface ProfessorPaperViewProps {
@@ -26,9 +26,7 @@ export const ProfessorPaperView = ({
 
   const paperDataTable = useMemo(() => {
     const dataTable: PaperTable[] = papers.map((paper) => ({
-      dateRange: `de ${dayjs(paper.theme?.startDate).format(
-        "DD/MM/YYYY"
-      )} até ${format(
+      dateRange: `de ${formatDate(paper.theme?.startDate)} até ${format(
         addDays(paper.theme?.startDate ?? "", paper.theme?.duration ?? 30),
         "dd/MM/yyyy"
       )}`,
