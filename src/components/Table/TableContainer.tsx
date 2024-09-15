@@ -24,7 +24,11 @@ import {
 interface TableContainerProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  filters?: (table: TanstackTable<TData>) => React.ReactNode;
+  filters?: (
+    table: TanstackTable<TData>,
+    globalFilter: string,
+    onGlobalFilterChange: (value: string) => void
+  ) => React.ReactNode;
 }
 
 export function TableContainer<TData, TValue>({
@@ -34,6 +38,7 @@ export function TableContainer<TData, TValue>({
 }: TableContainerProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = useState<string>("");
 
   const table = useReactTable({
     data,
@@ -43,16 +48,20 @@ export function TableContainer<TData, TValue>({
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
       columnFilters,
+      globalFilter,
     },
   });
 
   return (
     <>
-      <div className="flex items-center py-4 gap-2">{filters(table)}</div>
+      <div className="flex items-center py-4 gap-2">
+        {filters(table, globalFilter, setGlobalFilter)}
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

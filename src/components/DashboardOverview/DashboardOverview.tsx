@@ -9,7 +9,7 @@ export const DashboardOverview = () => {
       tabs={[
         {
           content: <SummaryView />,
-          label: "Dashboard",
+          label: "Resumo",
           value: "dashboard",
         },
         {

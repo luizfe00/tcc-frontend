@@ -1,11 +1,15 @@
 import { PendingApprovalsList } from "@/components/Approvals/PendingApprovalsList/PendingApprovalsList";
-import { DashboardOverview } from "@/components/DashboardOverview/DashboardOverview";
+import { SummaryView } from "@/components/DashboardOverview/SummaryView/SummaryView";
+import { Sidebar } from "@/components/Sidebar/Sidebar";
 
 export const DashboardPage = () => {
   return (
-    <div className="p-4 flex flex-col gap-4">
-      <PendingApprovalsList />
-      <DashboardOverview />
+    <div className="flex gap-8">
+      <Sidebar />
+      <div className="p-4 flex gap-4 w-full">
+        <SummaryView />
+        <PendingApprovalsList />
+      </div>
     </div>
   );
 };

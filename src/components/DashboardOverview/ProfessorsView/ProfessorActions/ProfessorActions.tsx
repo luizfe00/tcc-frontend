@@ -5,16 +5,25 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import {
+  MailIcon,
+  MoreHorizontal,
+  PenIcon,
+  ShieldBanIcon,
+  ShieldCheckIcon,
+  TrashIcon,
+} from "lucide-react";
 import { cn } from "@/utils";
 import { useNavigate } from "react-router-dom";
+import { User } from "@/interfaces";
+import { ProfessorsTableColumns } from "../ProfessorsTableColumns";
 
-interface DashboardActionsProps {
+interface ProfessorActionsProps {
   email?: string;
   id?: string;
 }
 
-export const DashboardActions = ({ email, id }: DashboardActionsProps) => {
+export const ProfessorActions = ({ email, id }: ProfessorActionsProps) => {
   const navigate = useNavigate();
   return (
     <DropdownMenu>
@@ -41,5 +50,29 @@ export const DashboardActions = ({ email, id }: DashboardActionsProps) => {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+};
+
+interface ProfessorTableGlobalActionsProps {
+  professors: ProfessorsTableColumns[];
+}
+
+export const ProfessorTableGlobalActions = ({
+  professors,
+}: ProfessorTableGlobalActionsProps) => {
+  const handleSendEmail = () => {};
+
+  return (
+    <div className="flex gap-2">
+      <Button variant="secondary" size="icon" className="w-8 h-8">
+        <MailIcon className="w-4 h-4" />
+      </Button>
+      <Button size="icon" className="w-8 h-8">
+        <ShieldCheckIcon className="w-4 h-4" />
+      </Button>
+      <Button variant="destructive" size="icon" className="w-8 h-8">
+        <ShieldBanIcon className="w-4 h-4" />
+      </Button>
+    </div>
   );
 };

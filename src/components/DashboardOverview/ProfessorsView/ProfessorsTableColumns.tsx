@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-import { DashboardActions } from "../DashboardActions/DashboardActions";
-import { DashboardStatusColumn } from "./DashboardStatusColumn/DashboardStatusColumn";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ProfessorsStatusColumn } from "./ProfessorStatusColumn/ProfessorsStatusColumn";
+import { ProfessorActions } from "./ProfessorActions/ProfessorActions";
 
-export type DashboardTable = {
+export type ProfessorsTableColumns = {
   id: string;
   name: string;
   enrollment: string;
@@ -15,7 +16,29 @@ export type DashboardTable = {
   active: boolean;
 };
 
-export const dashboardColumns: ColumnDef<DashboardTable>[] = [
+export const professorsTableColumns: ColumnDef<ProfessorsTableColumns>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -116,14 +139,14 @@ export const dashboardColumns: ColumnDef<DashboardTable>[] = [
     },
     cell: ({ row }) => {
       const user = row.original;
-      return <DashboardStatusColumn active={user.active} />;
+      return <ProfessorsStatusColumn active={user.active} />;
     },
   },
   {
     id: "actions",
     cell: ({ row }) => {
       const user = row.original;
-      return <DashboardActions email={user.email} id={user.id} />;
+      return <ProfessorActions email={user.email} id={user.id} />;
     },
   },
 ];

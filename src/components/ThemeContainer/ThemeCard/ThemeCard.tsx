@@ -46,6 +46,10 @@ export const ThemeCard = ({
 
   const showEditButton = owner && !userState.user?.orienteePaper?.id;
 
+  const disableInterestAction =
+    userState?.interests.some((interest) => interest.themeId === theme.id) ||
+    !!orienteePaperThemeId;
+
   return (
     <>
       <Card
@@ -84,7 +88,7 @@ export const ThemeCard = ({
           open={showDetails}
           onOpenChange={setShowDetails}
           theme={theme}
-          disabled={!!orienteePaperThemeId}
+          disabled={disableInterestAction}
           disabledByStudentInterest={
             userState.user?.role === "STUDENT" && userState.interests.length > 0
           }

@@ -47,16 +47,11 @@ export const PapersView = () => {
   return (
     <Card>
       <CardContent className="py-4">
-        <div>
-          <h1>Trabalhos</h1>
-          <div>
-            <TableContainer
-              columns={papersTableColumns}
-              data={tableData}
-              filters={paperFilters}
-            />
-          </div>
-        </div>
+        <TableContainer
+          columns={papersTableColumns}
+          data={tableData}
+          filters={paperFilters}
+        />
       </CardContent>
     </Card>
   );

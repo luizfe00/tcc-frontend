@@ -8,10 +8,11 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { ApproveInterestPayload, Interest, Theme } from "@/interfaces";
 import { InterestList } from "../../InterestList/InterestList";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { approveInterest } from "@/services/interestService";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { useUserStore } from "@/user/user.store";
 
 export interface ThemeDetailsProps {
   theme: Theme;
@@ -26,11 +27,22 @@ export const OwnThemeDetails = ({
 }: ThemeDetailsProps) => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const approveMutation = useMutation({
     mutationFn: approveInterest,
     mutationKey: ["approveInterest"],
     onSuccess: () => {
       toast({ description: "Trabalho de TCC criado com sucesso." });
+      queryClient.setQueryData(["userThemes"], (oldData: Theme[]) => {
+        return oldData.filter((theme) => theme.id !== theme.id);
+      });
+      useUserStore
+        .getState()
+        .setThemes(
+          useUserStore
+            .getState()
+            .themes.filter((theme) => theme.id !== theme.id)
+        );
       navigate("/papers");
     },
     onError: () => {
@@ -83,6 +95,7 @@ export const OwnThemeDetails = ({
             <InterestList
               interests={theme.interests}
               onApprove={handleApprove}
+              themeOwner
             />
           )}
         </div>

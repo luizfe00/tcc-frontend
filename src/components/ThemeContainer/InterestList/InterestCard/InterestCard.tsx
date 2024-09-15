@@ -18,25 +18,23 @@ export interface InterestCardProps extends InterestCardActions {
   interest: Interest;
   owner?: boolean;
   readonly?: boolean;
+  themeOwner?: boolean;
 }
 
 export const InterestCard = ({
   interest,
   owner,
   readonly = false,
+  themeOwner = false,
   onApprove = () => {},
   onReject = () => {},
 }: InterestCardProps) => {
-  const userState = useUserStore((state) => state);
-
-  const showActions = owner && !userState.user?.orienteePaper?.id;
-
   return (
     <Card className="p-3 cursor-default">
       <div className="flex flex-col gap-y-2">
         <div className="flex justify-between items-center">
           <span className="text sm font-medium">
-            {!owner ? interest.owner.name : interest?.theme?.label}
+            {themeOwner ? interest.owner.name : interest?.theme?.label}
           </span>
           <span className="text-sm font-medium">
             {formatDate(interest.createdAt)}
@@ -80,7 +78,7 @@ export const InterestCard = ({
               <TrashIcon className="w-5" />
             </Button>
           </>
-        ) : showActions ? (
+        ) : themeOwner ? (
           <>
             <Button
               size="sm"

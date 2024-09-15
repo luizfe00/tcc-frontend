@@ -30,30 +30,32 @@ export const ThemesView = () => {
     }));
   }, [data]);
 
-  const paperFilters = useCallback((table: Table<ThemesTable>) => {
-    return (
-      <Input
-        placeholder="Filtrar temas..."
-        value={(table.getColumn("label")?.getFilterValue() as string) ?? ""}
-        onChange={(event) =>
-          table.getColumn("label")?.setFilterValue(event.target.value)
-        }
-        className="max-w-sm"
-      />
-    );
-  }, []);
+  const paperFilters = useCallback(
+    (
+      table: Table<ThemesTable>,
+      globalFilter: string,
+      onGlobalFilterChange: (value: string) => void
+    ) => {
+      return (
+        <Input
+          placeholder="Filtrar temas..."
+          value={globalFilter}
+          onChange={(event) => onGlobalFilterChange(event.target.value)}
+          className="max-w-sm"
+        />
+      );
+    },
+    []
+  );
 
   return (
     <Card>
       <CardContent className="py-4">
-        <div>
-          <h1>Temas</h1>
-          <TableContainer
-            columns={papersTableColumns}
-            data={tableData}
-            filters={paperFilters}
-          />
-        </div>
+        <TableContainer
+          columns={papersTableColumns}
+          data={tableData}
+          filters={paperFilters}
+        />
       </CardContent>
     </Card>
   );

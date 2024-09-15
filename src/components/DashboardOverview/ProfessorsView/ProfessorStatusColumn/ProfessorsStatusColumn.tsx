@@ -1,13 +1,13 @@
 import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 
-export interface DashboardStatusColumnProps {
+export interface ProfessorsStatusColumnProps {
   active: boolean;
 }
 
-export const DashboardStatusColumn = ({
+export const ProfessorsStatusColumn = ({
   active,
-}: DashboardStatusColumnProps) => {
+}: ProfessorsStatusColumnProps) => {
   const [professorActive, setProfessorActive] = useState<boolean>(active);
 
   return (

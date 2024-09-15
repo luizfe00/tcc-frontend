@@ -25,7 +25,7 @@ const chartConfig = {
     color: "#5c25fa",
   },
   tcc: {
-    label: "PTCC",
+    label: "TCC",
     color: "#60b5da",
   },
 } satisfies ChartConfig;
