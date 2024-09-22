@@ -1,6 +1,9 @@
 import { PaperType, User } from "@/interfaces";
+import { DashboardStore } from "@/stores/dashboard/dashboard.store";
+import { cn } from "@/utils";
 import { formatDate } from "@/utils/DateUtil";
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
+import { isPast, isWithinInterval, subDays } from "date-fns";
 
 export type ThemesTable = {
   id: string;
@@ -32,13 +35,34 @@ const ownerFilterFn: FilterFn<ThemesTable> = (
 
 export const papersTableColumns: ColumnDef<ThemesTable>[] = [
   {
+    accessorKey: "endDate",
+    header: "Fim",
+    cell: ({ row }) => {
+      const { endDate } = row.original;
+      const interval = DashboardStore.getState().reminderDaysBefore;
+      const isThisWeek =
+        isPast(new Date(endDate)) ||
+        isWithinInterval(new Date(endDate), {
+          start: subDays(new Date(), interval),
+          end: new Date(),
+        });
+      return (
+        <span
+          className={cn("text-sm font-medium", isThisWeek && "text-red-600")}
+        >
+          {formatDate(endDate)}
+        </span>
+      );
+    },
+  },
+  {
     accessorKey: "active",
     header: "Tipo",
     cell: ({ row }) => {
       const { active } = row.original;
       return (
         <span className="text-sm font-medium">
-          {active ? "Ativo" : "Inativo"}
+          {active ? "Atribuído" : "Disponível"}
         </span>
       );
     },
@@ -78,14 +102,6 @@ export const papersTableColumns: ColumnDef<ThemesTable>[] = [
       return (
         <span className="text-sm font-medium">{formatDate(startDate)}</span>
       );
-    },
-  },
-  {
-    accessorKey: "endDate",
-    header: "Fim",
-    cell: ({ row }) => {
-      const { endDate } = row.original;
-      return <span className="text-sm font-medium">{formatDate(endDate)}</span>;
     },
   },
   {

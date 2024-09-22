@@ -3,9 +3,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getPapers } from "@/services/dashboardService";
 import { useQuery } from "@tanstack/react-query";
 import { PapersTable, papersTableColumns } from "./PapersTable";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
+import { PendingApprovalsList } from "@/components/Approvals/PendingApprovalsList/PendingApprovalsList";
 
 export const PapersView = () => {
   const { data } = useQuery({
@@ -13,15 +14,21 @@ export const PapersView = () => {
     queryFn: getPapers,
   });
 
+  const [paperFilter, setPaperFilter] = useState("");
+
   const tableData: PapersTable[] = useMemo(() => {
     if (!data) return [];
     return data.map((paper) => ({
       id: paper.id,
-      theme: paper.theme,
+      themeLabel: paper.theme?.label || "",
       status: paper.status,
-      advisor: paper.advisor,
-      orientee: paper.orientee,
+      advisorName: paper.advisor?.name || "",
+      advisorEmail: paper.advisor?.email || "",
+      orienteeName: paper.orientee?.name || "",
+      orienteeEmail: paper.orientee?.email || "",
       createdAt: paper.createdAt,
+      orientee: paper.orientee,
+      endDate: paper.theme?.endDate || "",
       documentUrl:
         paper.type === "PTCC"
           ? paper?.ptccDocumentUrl || ""
@@ -31,26 +38,35 @@ export const PapersView = () => {
     }));
   }, [data]);
 
-  const paperFilters = useCallback((table: Table<PapersTable>) => {
-    return (
-      <Input
-        placeholder="Filtrar titulos..."
-        value={(table.getColumn("theme")?.getFilterValue() as string) ?? ""}
-        onChange={(event) =>
-          table.getColumn("theme")?.setFilterValue(event.target.value)
-        }
-        className="max-w-sm"
-      />
-    );
-  }, []);
+  const papersFilters = useCallback(
+    (
+      table: Table<PapersTable>,
+      globalFilter: string,
+      onGlobalFilterChange: (value: string) => void
+    ) => {
+      return (
+        <Input
+          placeholder="Filtrar trabalhos..."
+          value={globalFilter}
+          onChange={(event) => {
+            onGlobalFilterChange(event.target.value);
+            setPaperFilter(event.target.value);
+          }}
+          className="max-w-sm"
+        />
+      );
+    },
+    []
+  );
 
   return (
     <Card>
       <CardContent className="py-4">
+        <PendingApprovalsList filter={paperFilter} horizontal />
         <TableContainer
           columns={papersTableColumns}
           data={tableData}
-          filters={paperFilters}
+          filters={papersFilters}
         />
       </CardContent>
     </Card>

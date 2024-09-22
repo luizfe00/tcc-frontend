@@ -7,8 +7,11 @@ import { useCallback, useMemo } from "react";
 import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { addDays } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 export const ThemesView = () => {
+  const navigate = useNavigate();
+
   const { data } = useQuery({
     queryKey: ["dashboard-themes"],
     queryFn: getThemes,
@@ -48,6 +51,11 @@ export const ThemesView = () => {
     []
   );
 
+  const handleRowClick = (row: ThemesTable) => {
+    console.log(row);
+    navigate(`/dashboard/papers?search=${row?.label}`);
+  };
+
   return (
     <Card>
       <CardContent className="py-4">
@@ -55,6 +63,8 @@ export const ThemesView = () => {
           columns={papersTableColumns}
           data={tableData}
           filters={paperFilters}
+          onRowClick={handleRowClick}
+          rowClassName="cursor-pointer"
         />
       </CardContent>
     </Card>

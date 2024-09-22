@@ -36,6 +36,7 @@ export type Theme = {
   updatedAt: string;
   deletedAt: string;
   startDate: string;
+  endDate?: string;
   paperProposition: Paper | null;
   paper: Paper | null;
   interests: Interest[];

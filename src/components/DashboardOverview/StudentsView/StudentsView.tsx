@@ -5,29 +5,63 @@ import {
   studentsTableColumns,
 } from "./StudentsTableColumns";
 import { Table } from "@tanstack/react-table";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Prerequistes } from "./Prerequisites/Prerequistes";
+import { getStudents } from "@/services/dashboardService";
+import { useQuery } from "@tanstack/react-query";
+import { StudentsTableGlobalActions } from "./StudentsActions/StudentsActions";
+import { getPaperStatus } from "@/utils/PaperUtil";
 
 export const StudentsView = () => {
+  const { data: students } = useQuery({
+    queryKey: ["students"],
+    queryFn: getStudents,
+  });
+
   const studentsFilters = useCallback(
     (
       table: Table<StudentsTableColumns>,
       globalFilter: string,
       onGlobalFilterChange: (value: string) => void
     ) => {
+      const showAction =
+        table.getIsAllPageRowsSelected() ||
+        (table.getIsSomePageRowsSelected() && "indeterminate");
       return (
-        <Input
-          placeholder="Filtrar alunos..."
-          value={globalFilter}
-          onChange={(event) => onGlobalFilterChange(event.target.value)}
-          className="max-w-sm"
-        />
+        <div className="flex justify-between items-center w-full">
+          <Input
+            placeholder="Filtrar professores..."
+            value={globalFilter}
+            onChange={(event) => onGlobalFilterChange(event.target.value)}
+            className="max-w-sm"
+          />
+          {showAction && (
+            <StudentsTableGlobalActions
+              students={table
+                .getSelectedRowModel()
+                .rows.map((row) => row.original)}
+            />
+          )}
+        </div>
       );
     },
     []
   );
+
+  const studentsData: StudentsTableColumns[] = useMemo(() => {
+    if (!students) return [];
+    return students?.map((student) => ({
+      id: student.id,
+      name: student.name,
+      email: student.email,
+      enrollment: student.enrollment,
+      theme: student?.themes?.[0]?.label || "",
+      paperStatus: getPaperStatus(student?.papers?.[0]?.approvals || []).label,
+      status: "Aprovado",
+    }));
+  }, [students]);
 
   return (
     <Card className="w-full max-w-6xl">
@@ -40,7 +74,7 @@ export const StudentsView = () => {
           <TabsContent value="students">
             <TableContainer
               columns={studentsTableColumns}
-              data={[]}
+              data={studentsData}
               filters={studentsFilters}
             />
           </TabsContent>

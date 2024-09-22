@@ -6,6 +6,7 @@ import { Interest } from "@/interfaces";
 import { MailIcon, PenIcon } from "lucide-react";
 import clsx from "clsx";
 import { formatDate } from "@/utils/DateUtil";
+import { handleSendEmail } from "@/services/emailService";
 
 export interface InterestCardActions {
   onApprove?: (interest: Interest) => void;
@@ -45,21 +46,21 @@ export const InterestCard = ({
       <div className="flex gap-2 justify-end">
         {owner ? (
           <>
-            <a
-              href={`mailto:${interest.owner.email}`}
-              className={clsx([
-                readonly && "pointer-events-none cursor-default",
-              ])}
+            <Button
+              variant="secondary"
+              size="icon"
+              className="w-8 h-8"
+              disabled={readonly}
+              onClick={() =>
+                handleSendEmail(
+                  interest.owner.email,
+                  "Tema de Interesse",
+                  interest.text
+                )
+              }
             >
-              <Button
-                variant="secondary"
-                size="icon"
-                className="w-8 h-8"
-                disabled={readonly}
-              >
-                <MailIcon className="w-4" />
-              </Button>
-            </a>
+              <MailIcon className="w-4" />
+            </Button>
             <Button
               variant="outline"
               size="icon"

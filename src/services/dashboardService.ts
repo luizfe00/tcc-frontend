@@ -4,6 +4,7 @@ import {
   GetPapersResponse,
   SubjectResponse,
   Theme,
+  User,
 } from "@/interfaces";
 import axiosInstace from "./axios";
 import {
@@ -58,5 +59,10 @@ export const getConfig = async () => {
 
 export const updateConfig = async (config: Partial<SystemConfig>) => {
   const { data } = await axiosInstace.put<SystemConfig>(`/config`, config);
+  return data;
+};
+
+export const getStudents = async () => {
+  const { data } = await axiosInstace.get<User[]>(`dashboard/students`);
   return data;
 };

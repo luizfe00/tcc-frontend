@@ -1,6 +1,9 @@
-import { PaperType, User, Theme } from "@/interfaces";
+import { PaperType } from "@/interfaces";
+import { DashboardStore } from "@/stores/dashboard/dashboard.store";
+import { cn } from "@/utils";
 import { formatDate } from "@/utils/DateUtil";
-import { ColumnDef, FilterFn } from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
+import { isPast, isWithinInterval, subDays } from "date-fns";
 
 export type PapersTable = {
   id: string;
@@ -9,24 +12,38 @@ export type PapersTable = {
   type: PaperType;
   createdAt: string;
   updatedAt: string;
-  advisor: Partial<User>;
-  orientee: Partial<User>;
-  theme: Partial<Theme>;
-};
-
-const themeFilterFn: FilterFn<PapersTable> = (
-  row,
-  columnId,
-  filterValue: string
-) => {
-  return (
-    (row.getValue(columnId) as Partial<Theme>)?.label
-      ?.toLowerCase()
-      .includes(filterValue.toLowerCase()) ?? true
-  );
+  endDate: string;
+  advisorName: string;
+  advisorEmail: string;
+  orienteeName: string;
+  orienteeEmail: string;
+  themeLabel: string;
 };
 
 export const papersTableColumns: ColumnDef<PapersTable>[] = [
+  {
+    accessorKey: "endDate",
+    header: "Data de entrega",
+    cell: ({ row }) => {
+      const { endDate } = row.original;
+      if (!endDate)
+        return <span className="text-sm font-medium">Não definido</span>;
+      const interval = DashboardStore.getState().reminderDaysBefore;
+      const isThisWeek =
+        isPast(new Date(endDate)) ||
+        isWithinInterval(new Date(endDate), {
+          start: subDays(new Date(), interval),
+          end: new Date(),
+        });
+      return (
+        <span
+          className={cn("text-sm font-medium", isThisWeek && "text-red-600")}
+        >
+          {formatDate(endDate)}
+        </span>
+      );
+    },
+  },
   {
     accessorKey: "type",
     header: "Tipo",
@@ -39,10 +56,9 @@ export const papersTableColumns: ColumnDef<PapersTable>[] = [
     accessorKey: "theme",
     header: "Tema",
     cell: ({ row }) => {
-      const { theme } = row.original;
-      return <span className="text-sm font-medium">{theme.label}</span>;
+      const { themeLabel } = row.original;
+      return <span className="text-sm font-medium">{themeLabel}</span>;
     },
-    filterFn: themeFilterFn,
   },
   {
     accessorKey: "status",
@@ -56,16 +72,26 @@ export const papersTableColumns: ColumnDef<PapersTable>[] = [
     accessorKey: "advisor",
     header: "Orientador",
     cell: ({ row }) => {
-      const { advisor } = row.original;
-      return <span className="text-sm font-medium">{advisor.name}</span>;
+      const { advisorName, advisorEmail } = row.original;
+      return (
+        <div className="flex flex-col">
+          <span className="text-sm font-medium">{advisorName}</span>
+          <span className="text-sm text-muted-foreground">{advisorEmail}</span>
+        </div>
+      );
     },
   },
   {
     accessorKey: "orientee",
     header: "Orientando",
     cell: ({ row }) => {
-      const { orientee } = row.original;
-      return <span className="text-sm font-medium">{orientee.name}</span>;
+      const { orienteeName, orienteeEmail } = row.original;
+      return (
+        <div className="flex flex-col">
+          <span className="text-sm font-medium">{orienteeName}</span>
+          <span className="text-sm text-muted-foreground">{orienteeEmail}</span>
+        </div>
+      );
     },
   },
   {

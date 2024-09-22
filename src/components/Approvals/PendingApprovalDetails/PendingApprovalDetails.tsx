@@ -1,10 +1,3 @@
-import { PaperStages } from "@/components/Paper/PaperStages/PaperStages";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,9 +8,9 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Approval } from "@/interfaces";
+import { handleSendEmail } from "@/services/emailService";
 import { getPaperStatus } from "@/utils/PaperUtil";
 import { format } from "date-fns";
-import { useState } from "react";
 
 export type PendingApprovalDetailsProps = {
   approval: Approval;
@@ -30,12 +23,6 @@ export const PendingApprovalDetails: React.FC<PendingApprovalDetailsProps> = ({
   open = false,
   onOpenChange = () => {},
 }) => {
-  const [showStages, setShowStages] = useState(false);
-
-  const handleAccordion = (value?: string) => {
-    setShowStages(!!value);
-  };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[960px] cursor-default">
@@ -86,7 +73,7 @@ export const PendingApprovalDetails: React.FC<PendingApprovalDetailsProps> = ({
             {getPaperStatus([approval]).label}
           </p>
         </section>
-        <section>
+        {/* <section>
           <Accordion
             type="single"
             collapsible
@@ -111,9 +98,26 @@ export const PendingApprovalDetails: React.FC<PendingApprovalDetailsProps> = ({
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        </section>
+        </section> */}
         <footer>
           <div className="flex gap-x-4 justify-end">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                handleSendEmail(
+                  [
+                    approval?.paper?.advisor?.email ?? "",
+                    approval?.paper?.orientee?.email ?? "",
+                  ],
+                  "Trabalho de Conclusão de Curso - " +
+                    approval?.paper?.theme?.label,
+                  ""
+                )
+              }
+            >
+              Enviar email
+            </Button>
             <Button variant="destructive" size="sm">
               Rejeitar
             </Button>

@@ -14,6 +14,7 @@ import {
 import { cn } from "@/utils";
 import { useNavigate } from "react-router-dom";
 import { ProfessorsTableColumns } from "../ProfessorsTableColumns";
+import { handleSendEmail } from "@/services/emailService";
 
 interface ProfessorActionsProps {
   email?: string;
@@ -40,7 +41,7 @@ export const ProfessorActions = ({ email, id }: ProfessorActionsProps) => {
         </DropdownMenuItem>
         <DropdownMenuItem
           disabled={!email}
-          onClick={() => window.alert("email: " + email)}
+          onClick={() => handleSendEmail(email ?? "", "", "")}
           className={cn(!email ? "cursor-not-allowed" : "cursor-pointer")}
         >
           Enviar email

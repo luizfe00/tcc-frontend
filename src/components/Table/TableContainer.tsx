@@ -20,6 +20,7 @@ import {
   TableCell,
   Table,
 } from "../ui/table";
+import { useSearchParams } from "react-router-dom";
 
 interface TableContainerProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -29,16 +30,23 @@ interface TableContainerProps<TData, TValue> {
     globalFilter: string,
     onGlobalFilterChange: (value: string) => void
   ) => React.ReactNode;
+  onRowClick?: (row: TData) => void;
+  rowClassName?: string;
 }
 
 export function TableContainer<TData, TValue>({
   columns,
   data,
   filters = () => null,
+  onRowClick,
+  rowClassName,
 }: TableContainerProps<TData, TValue>) {
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get("search");
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [globalFilter, setGlobalFilter] = useState<string>("");
+  const [globalFilter, setGlobalFilter] = useState<string>(search ?? "");
 
   const table = useReactTable({
     data,
@@ -88,6 +96,8 @@ export function TableContainer<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => onRowClick?.(row.original)}
+                  className={rowClassName}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
