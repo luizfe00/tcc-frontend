@@ -13,7 +13,7 @@ export const SummaryView = () => {
   });
 
   return (
-    <Card>
+    <Card className="rounded-sm">
       <CardContent className="py-4 flex flex-col gap-4">
         <div className="flex gap-4">
           <PaperPerMonthView data={data?.papers.paperPerMonth} />

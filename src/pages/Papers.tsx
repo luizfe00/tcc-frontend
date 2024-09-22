@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import { ProfessorPaperView } from "@/components/PaperView/ProfessorPaperView/ProfessorPaperView";
 import { StudentPaperView } from "@/components/PaperView/StudentPaperView/StudentPaperView";
 import { getUserPapers } from "@/services/paperService";
-import { useUserStore } from "@/user/user.store";
+import { useUserStore } from "@/stores/user/user.store";
 import { useQuery } from "@tanstack/react-query";
 
 export const PapersPage = () => {

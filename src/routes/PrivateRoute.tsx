@@ -1,4 +1,4 @@
-import { useUserStore } from "@/user/user.store";
+import { useUserStore } from "@/stores/user/user.store";
 import { Navigate, Outlet } from "react-router-dom";
 
 export const PrivateRoute = () => {

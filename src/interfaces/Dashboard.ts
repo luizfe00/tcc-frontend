@@ -154,3 +154,20 @@ export type ProfessorDashboardBIResponse = {
   papers: ProfessorPaperStatsQuery;
   themes: ProfessorThemeStatsQuery;
 };
+
+export type AnonymizedProfessor = {
+  academicUnitCode: number;
+  registration: number;
+  status: string;
+  titration: string;
+};
+
+export type GetProfessorsConfigDashboardResponse = {
+  professors: AnonymizedProfessor[];
+};
+
+export type Prerequisites = {
+  minCredits: number;
+  minPeriods: number;
+  preRequisites: string[];
+};

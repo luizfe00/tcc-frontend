@@ -8,7 +8,7 @@ import { cn } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { EditIcon } from "lucide-react";
 import { NewTheme } from "../NewTheme/NewTheme.container";
-import { useUserStore } from "@/user/user.store";
+import { useUserStore } from "@/stores/user/user.store";
 
 export interface ThemeCardProps {
   theme: Theme;

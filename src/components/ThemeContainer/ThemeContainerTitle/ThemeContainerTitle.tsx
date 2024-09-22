@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useUserStore } from "@/user/user.store";
+import { useUserStore } from "@/stores/user/user.store";
 import { PlusIcon } from "lucide-react";
 
 export interface ThemeContainerTitleProps {

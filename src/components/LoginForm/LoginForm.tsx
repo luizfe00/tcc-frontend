@@ -14,10 +14,10 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import axiosInstace from "@/services/axios";
 import { ENDPOINT } from "@/constants/Endpoints";
-import { useUserStore } from "@/user/user.store";
 import { useNavigate } from "react-router-dom";
 import { User } from "@/interfaces";
 import { toast } from "../ui/use-toast";
+import { useUserStore } from "@/stores/user/user.store";
 
 export interface LoginFormPayload {
   username: string;
@@ -25,9 +25,7 @@ export interface LoginFormPayload {
 }
 
 const formSchema = z.object({
-  username: z
-    .string({ required_error: "Informe uma matrícula válida." })
-    .regex(/^\d+$/, "Matrícula deve conter apenas números."),
+  username: z.string({ required_error: "Informe uma matrícula válida." }),
   password: z
     .string({ required_error: "Informe uma senha." })
     .min(5, "Senha deve conter ao menos 5 caracteres."),

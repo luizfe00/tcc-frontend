@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Theme } from "@/interfaces";
 import { addDays } from "date-fns";
 import { DatePicker } from "@/components/DatePicker/DatePicker";
-import { useUserStore } from "@/user/user.store";
+import { useUserStore } from "@/stores/user/user.store";
 
 interface NewThemeFormValues {
   label: string;

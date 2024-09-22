@@ -6,7 +6,7 @@ import {
   CreateNewInterestPayload,
   Interest,
 } from "@/interfaces";
-import { useUserStore } from "@/user/user.store";
+import { useUserStore } from "@/stores/user/user.store";
 
 export const getUserInterests = async () => {
   const { data } = await axiosInstace.get<Interest[]>(

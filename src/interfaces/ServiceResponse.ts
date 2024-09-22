@@ -49,3 +49,34 @@ export type CreateStageResponse = PaperStage;
 export type GetDashboardDataResponse = DashboardBI;
 
 export type GetPapersResponse = PapersTable[];
+
+export type CurriculumComponentType =
+  | "NORMAL"
+  | "ESTAGIO_SUPERVISIONADO"
+  | "MONOGRAFIA"
+  | "PRATICA_DE_ENSINO"
+  | "TRABALHO_DE_GRADUACAO"
+  | "ATIVIDADE_COMPLEMENTAR";
+
+export type SubjectResponse = {
+  subjectCode: number;
+  name: string;
+  weeklyTheoreticalHours: number;
+  weeklyPracticalHours: number;
+  credits: number;
+  totalHours: number;
+  passingAvarageGrade: number;
+  academicUnitCode: number;
+  status: "ATIVO" | "INATIVO";
+  computeCre: string;
+  curriculumComponentTypeEnum: CurriculumComponentType;
+};
+
+export type SystemConfig = {
+  minCredits: number;
+  minPeriods: number;
+  preRequisites: string;
+  activeProfessors: string;
+  reminderTemplate: string;
+  reminderDaysBefore: number;
+};

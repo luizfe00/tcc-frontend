@@ -1,4 +1,4 @@
-import { useUserStore } from "@/user/user.store";
+import { useUserStore } from "@/stores/user/user.store";
 import { getUserFirstName } from "@/utils/StringUtil";
 import { Button } from "../ui/button";
 import { BellIcon } from "@heroicons/react/24/outline";

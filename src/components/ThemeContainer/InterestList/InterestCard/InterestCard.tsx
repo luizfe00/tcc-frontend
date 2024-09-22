@@ -2,9 +2,8 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Interest, Theme } from "@/interfaces";
+import { Interest } from "@/interfaces";
 import { MailIcon, PenIcon } from "lucide-react";
-import { useUserStore } from "@/user/user.store";
 import clsx from "clsx";
 import { formatDate } from "@/utils/DateUtil";
 

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import { ENDPOINT } from "../constants/Endpoints";
-import { useUserStore } from "../user/user.store";
+import { useUserStore } from "@/stores/user/user.store";
 import { User } from "../interfaces";
 import axiosInstace from "../services/axios";
 import Logo from "../assets/logo.svg?react";

@@ -1,7 +1,7 @@
 import { Interest } from "@/interfaces";
 import { InterestCard, InterestCardActions } from "./InterestCard/InterestCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useUserStore } from "@/user/user.store";
+import { useUserStore } from "@/stores/user/user.store";
 
 export interface InterestListProps extends InterestCardActions {
   interests?: Interest[];

@@ -1,7 +1,7 @@
 import { CreateNewThemePayload, GetThemesResponse, Theme } from "@/interfaces";
 import { ENDPOINT } from "../constants/Endpoints";
 import axiosInstace from "./axios";
-import { useUserStore } from "@/user/user.store";
+import { useUserStore } from "@/stores/user/user.store";
 
 export const getAllStudentThemes = async () => {
   const { data } = await axiosInstace.get<GetThemesResponse>(

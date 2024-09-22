@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import { PublicRoutes } from "./routes/Routes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useUserStore } from "./user/user.store";
+import { useUserStore } from "./stores/user/user.store";
 
 function App() {
   const user = useUserStore((state) => state.user);

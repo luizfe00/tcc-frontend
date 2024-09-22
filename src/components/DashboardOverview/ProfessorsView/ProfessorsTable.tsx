@@ -8,8 +8,6 @@ import {
 } from "./ProfessorsTableColumns";
 import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
 import { ProfessorTableGlobalActions } from "./ProfessorActions/ProfessorActions";
 
 export const ProfessorsTable = () => {

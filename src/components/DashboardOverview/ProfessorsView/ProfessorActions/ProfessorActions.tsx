@@ -8,14 +8,11 @@ import { Button } from "@/components/ui/button";
 import {
   MailIcon,
   MoreHorizontal,
-  PenIcon,
   ShieldBanIcon,
   ShieldCheckIcon,
-  TrashIcon,
 } from "lucide-react";
 import { cn } from "@/utils";
 import { useNavigate } from "react-router-dom";
-import { User } from "@/interfaces";
 import { ProfessorsTableColumns } from "../ProfessorsTableColumns";
 
 interface ProfessorActionsProps {

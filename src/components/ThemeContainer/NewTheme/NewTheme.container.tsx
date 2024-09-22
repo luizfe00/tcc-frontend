@@ -1,7 +1,7 @@
 import { toast } from "@/components/ui/use-toast";
 import { CreateNewThemePayload, Theme } from "@/interfaces";
 import { createnewTheme } from "@/services/themeService";
-import { useUserStore } from "@/user/user.store";
+import { useUserStore } from "@/stores/user/user.store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";

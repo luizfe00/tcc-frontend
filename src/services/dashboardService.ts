@@ -1,11 +1,16 @@
 import {
+  SystemConfig,
   GetDashboardDataResponse,
   GetPapersResponse,
-  Paper,
+  SubjectResponse,
   Theme,
 } from "@/interfaces";
 import axiosInstace from "./axios";
-import { ProfessorDashboardBIResponse } from "@/interfaces/Dashboard";
+import {
+  AnonymizedProfessor,
+  ProfessorDashboardBIResponse,
+} from "@/interfaces/Dashboard";
+import { DashboardStore } from "@/stores/dashboard/dashboard.store";
 
 export const getDashboardData = async () => {
   const { data } = await axiosInstace.get<GetDashboardDataResponse>(
@@ -28,5 +33,30 @@ export const getPapers = async () => {
 
 export const getThemes = async () => {
   const { data } = await axiosInstace.get<Theme[]>(`/themes/all`);
+  return data;
+};
+
+export const getProfessors = async () => {
+  const { data } = await axiosInstace.get<AnonymizedProfessor[]>(
+    `/dashboard/teachers?academicUnitCode=14110000`
+  );
+  return data;
+};
+
+export const getSubjects = async () => {
+  const { data } = await axiosInstace.get<SubjectResponse[]>(
+    `/dashboard/subjects?academicUnitCode=14110000`
+  );
+  return data;
+};
+
+export const getConfig = async () => {
+  const { data } = await axiosInstace.get<SystemConfig>(`/config`);
+  DashboardStore.getState().setConfig(data);
+  return data;
+};
+
+export const updateConfig = async (config: Partial<SystemConfig>) => {
+  const { data } = await axiosInstace.put<SystemConfig>(`/config`, config);
   return data;
 };

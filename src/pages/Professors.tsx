@@ -1,4 +1,4 @@
-import { ProfessorsTable } from "@/components/DashboardOverview/ProfessorsView/ProfessorsTable";
+import { ProfessorTabs } from "@/components/DashboardOverview/ProfessorsView/ProfessorTabs/ProfessorTabs";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -9,7 +9,7 @@ export const ProfessorsPage = () => {
       <div className="p-4 flex flex-col gap-4 w-full">
         <Card>
           <CardContent className="py-4">
-            <ProfessorsTable />
+            <ProfessorTabs />
           </CardContent>
         </Card>
       </div>

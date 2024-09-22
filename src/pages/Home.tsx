@@ -11,12 +11,12 @@ import {
   ThemeContainerTitle,
   ThemeSearchList,
 } from "@/components/ThemeContainer";
-import { useUserStore } from "@/user/user.store";
 import { OwnThemePresentation } from "@/components/ThemeContainer/OwnThemePresentation/OwnThemePresentation";
 import { NewTheme } from "@/components/ThemeContainer/NewTheme/NewTheme.container";
 import { InterestList } from "@/components/ThemeContainer/InterestList/InterestList";
 import { getUserInterests } from "@/services/interestService";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useUserStore } from "@/stores/user/user.store";
 
 export default function HomePage() {
   const user = useUserStore((state) => state.user);

@@ -139,7 +139,7 @@ export const professorsTableColumns: ColumnDef<ProfessorsTableColumns>[] = [
     },
     cell: ({ row }) => {
       const user = row.original;
-      return <ProfessorsStatusColumn active={user.active} />;
+      return <span>{user.active ? "Ativo" : "Inativo"}</span>;
     },
   },
   {
