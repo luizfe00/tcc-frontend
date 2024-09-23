@@ -1,4 +1,4 @@
-import { Interest, Theme, User } from "../interfaces";
+import { Interest, Theme, User } from "@/interfaces";
 
 export type UserActions = {
   setUser: (user: User) => void;
