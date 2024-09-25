@@ -58,6 +58,10 @@ export const Sidebar = () => {
           name="Sair"
           path="/"
           pathname="/logout"
+          onClick={() => {
+            sessionStorage.removeItem('tcc_user_token')
+            window.location.pathname = '/'
+          }}
         />
         <span className="text-xs text-muted-foreground">Versão 0.0.1</span>
       </footer>

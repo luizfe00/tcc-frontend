@@ -1,9 +1,9 @@
 import { useUserStore } from "@/stores/user/user.store";
 import { getUserFirstName } from "@/utils/StringUtil";
 import { Button } from "../ui/button";
-import { BellIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo-sm.svg?react";
+import { LogOutIcon } from "lucide-react";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -11,6 +11,11 @@ const Navbar = () => {
 
   const hideTccLink = user?.role === "STUDENT" && !user.orienteePaper;
   const hideHomeLink = user?.role === "STUDENT" && user.orienteePaper;
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('tcc_user_token')
+    window.location.pathname = '/'
+  }
 
   return (
     <div
@@ -36,8 +41,8 @@ const Navbar = () => {
       <div className="flex items-center gap-x-2">
         <span>Bem vindo,</span>
         <span>{getUserFirstName(user?.name)}</span>
-        <Button variant="ghost" size="icon">
-          <BellIcon className="w-5" />
+        <Button variant="ghost" size="icon" onClick={handleLogout}>
+          <LogOutIcon className="w-4 h-4" />
         </Button>
       </div>
     </div>

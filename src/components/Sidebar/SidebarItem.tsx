@@ -5,6 +5,7 @@ interface SidebarItemProps {
   path: string;
   icon: React.ReactNode;
   pathname: string;
+  onClick?: () => void;
 }
 
 export const SidebarItem = ({
@@ -12,9 +13,10 @@ export const SidebarItem = ({
   path,
   icon,
   pathname,
+  onClick
 }: SidebarItemProps) => {
   return (
-    <Link to={path}>
+    <Link to={path} onClick={onClick}>
       <div
         className={`flex items-center gap-2 p-2 rounded-md ${
           pathname === path
