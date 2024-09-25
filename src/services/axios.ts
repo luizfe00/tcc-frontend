@@ -5,7 +5,9 @@ const api_url = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 
 const axiosInstace = axios.create({
   baseURL: api_url,
-  withCredentials: true,
+  headers: {
+    "ngrok-skip-browser-warning": "any"
+  }
 });
 
 axiosInstace.interceptors.request.use((config) => {
