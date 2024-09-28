@@ -7,9 +7,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { toast } from "@/components/ui/use-toast";
 import { Approval } from "@/interfaces";
+import { updateApproval } from "@/services/approvalsService";
 import { handleSendEmail } from "@/services/emailService";
 import { getPaperStatus } from "@/utils/PaperUtil";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 
 export type PendingApprovalDetailsProps = {
@@ -23,6 +26,45 @@ export const PendingApprovalDetails: React.FC<PendingApprovalDetailsProps> = ({
   open = false,
   onOpenChange = () => {},
 }) => {
+  const queryClient = useQueryClient();
+  const { mutate: handleUpdateApproval } = useMutation({
+    mutationFn: updateApproval,
+    onSuccess: () => {
+      toast({
+        title: "Trabalho aprovado com sucesso",
+        duration: 2500,
+      });
+      queryClient.invalidateQueries({ queryKey: ["pendingApprovals"] });
+    },
+  });
+  const { mutate: handleRejectApproval } = useMutation({
+    mutationFn: updateApproval,
+    onSuccess: () => {
+      toast({
+        title: "Trabalho rejeitado com sucesso",
+        duration: 2500,
+        variant: "destructive",
+      });
+      queryClient.invalidateQueries({ queryKey: ["pendingApprovals"] });
+    },
+  });
+
+  const handleApprove = () => {
+    handleUpdateApproval({
+      ...approval,
+      approval: true,
+      response: "Trabalho aprovado pelo orientador",
+    });
+  };
+
+  const handleReject = () => {
+    handleRejectApproval({
+      ...approval,
+      response: "Trabalho rejeitado pelo orientador",
+      approval: false,
+    });
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[960px] cursor-default">
@@ -118,10 +160,12 @@ export const PendingApprovalDetails: React.FC<PendingApprovalDetailsProps> = ({
             >
               Enviar email
             </Button>
-            <Button variant="destructive" size="sm">
+            <Button variant="destructive" size="sm" onClick={handleReject}>
               Rejeitar
             </Button>
-            <Button size="sm">Aprovar</Button>
+            <Button size="sm" onClick={handleApprove}>
+              Aprovar
+            </Button>
           </div>
         </footer>
       </DialogContent>

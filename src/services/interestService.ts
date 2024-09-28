@@ -33,3 +33,8 @@ export const createInterest = async (newInterest: CreateNewInterestPayload) => {
   );
   return data;
 };
+
+export const deleteInterest = async (interestId: string) => {
+  const { data } = await axiosInstace.delete<void>(`interest/${interestId}`);
+  return data;
+};

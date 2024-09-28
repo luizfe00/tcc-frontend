@@ -8,3 +8,15 @@ export const getPendingApprovals = async () => {
   );
   return data;
 };
+
+export const updateApproval = async (approval: Approval) => {
+  const { data } = await axiosInstace.put<Approval>(
+    `/approval/${approval.id}`,
+    {
+      approval: approval.approval,
+      response: approval.response,
+      paperId: approval.paperId,
+    }
+  );
+  return data;
+};

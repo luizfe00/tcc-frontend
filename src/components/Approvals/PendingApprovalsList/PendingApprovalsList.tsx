@@ -17,7 +17,7 @@ export const PendingApprovalsList = ({
   horizontal,
 }: PendingApprovalsListProps) => {
   const { data, isLoading } = useQuery({
-    queryKey: ["pendingAppprovals"],
+    queryKey: ["pendingApprovals"],
     queryFn: getPendingApprovals,
   });
 

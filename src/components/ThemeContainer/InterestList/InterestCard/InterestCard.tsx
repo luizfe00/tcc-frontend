@@ -7,6 +7,9 @@ import { MailIcon, PenIcon } from "lucide-react";
 import clsx from "clsx";
 import { formatDate } from "@/utils/DateUtil";
 import { handleSendEmail } from "@/services/emailService";
+import { deleteInterest } from "@/services/interestService";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "@/components/ui/use-toast";
 
 export interface InterestCardActions {
   onApprove?: (interest: Interest) => void;
@@ -29,6 +32,21 @@ export const InterestCard = ({
   onApprove = () => {},
   onReject = () => {},
 }: InterestCardProps) => {
+  const queryClient = useQueryClient();
+  const { mutate: handleDelete } = useMutation({
+    mutationFn: deleteInterest,
+    onSuccess: () => {
+      toast({
+        title: "Interesse deletado com sucesso",
+        duration: 2500,
+      });
+      queryClient.invalidateQueries({ queryKey: ["userInterests"] });
+    },
+  });
+  const handleDeleteInterest = () => {
+    handleDelete(interest.id);
+  };
+
   return (
     <Card className="p-3 cursor-default">
       <div className="flex flex-col gap-y-2">
@@ -62,18 +80,11 @@ export const InterestCard = ({
               <MailIcon className="w-4" />
             </Button>
             <Button
-              variant="outline"
-              size="icon"
-              className="w-8 h-8"
-              disabled={readonly}
-            >
-              <PenIcon className="w-4" />
-            </Button>
-            <Button
               variant="destructive"
               size="icon"
               className="w-8 h-8"
               disabled={readonly}
+              onClick={handleDeleteInterest}
             >
               <TrashIcon className="w-5" />
             </Button>
