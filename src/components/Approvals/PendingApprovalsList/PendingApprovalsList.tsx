@@ -32,7 +32,7 @@ export const PendingApprovalsList = ({
   }, [data, filter]);
 
   return (
-    <div>
+    <div className="w-[400px]">
       <div className="flex flex-col mb-2">
         <span className="font-medium text-muted-foreground">Pendências</span>
         <span className="text-xs text-muted-foreground">
@@ -51,7 +51,7 @@ export const PendingApprovalsList = ({
         >
           <div
             className={cn(
-              "flex flex-col w-max p-4 space-x-4",
+              "flex flex-col w-max space-x-4",
               horizontal && "flex-row"
             )}
           >

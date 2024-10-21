@@ -15,7 +15,8 @@ export const ThemeContainerTitle = ({
   const userState = useUserStore((state) => state);
 
   const disabled =
-    userState.themes.length > 0 && userState.user?.role === "STUDENT";
+    (userState.themes.length > 0 || !!userState?.user?.orienteePaper) &&
+    userState.user?.role === "STUDENT";
 
   const handleButtonClick = () => {
     if (disabled) {

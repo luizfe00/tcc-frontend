@@ -79,48 +79,6 @@ export const PaperDetailsModal = ({
             </div>
             <Separator className="mt-2" />
             <p>{data?.theme?.summary}</p>
-            {/* <div className="mt-2">
-              <span className="text-gray-500 font-medium">Envios</span>
-              <Separator className="mt-1 mb-2" />
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Titulo</TableHead>
-                    <TableHead>Mensagem</TableHead>
-                    <TableHead>Feedback</TableHead>
-                    <TableHead className="text-center">Visualizado</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {data?.stages?.length ? (
-                    data.stages.map((stage) => (
-                      <TableRow key={stage.id}>
-                        <TableCell>
-                          {dayjs(stage.createdAt).format("DD/MM/YYYY")}
-                        </TableCell>
-                        <TableCell>{stage.label}</TableCell>
-                        <TableCell>{stage.message}</TableCell>
-                        <TableCell>{stage.feedback}</TableCell>
-                        <TableCell>
-                          <div className="w-full h-full flex justify-center items-center">
-                            {stage.viewed ? (
-                              <EyeIcon className="w-4 h-4" />
-                            ) : (
-                              <EyeSlashIcon className="w-4 h-4" />
-                            )}
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={5}>Nenhum envio encontrado</TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </div> */}
           </div>
         </TooltipProvider>
       </DialogContent>

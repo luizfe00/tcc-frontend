@@ -26,6 +26,10 @@ export const PendingApprovalDetails: React.FC<PendingApprovalDetailsProps> = ({
   open = false,
   onOpenChange = () => {},
 }) => {
+  const documentUrl =
+    approval.paper?.type === "PTCC"
+      ? approval.paper?.ptccDocumentUrl
+      : approval.paper?.tccDocumentUrl;
   const queryClient = useQueryClient();
   const { mutate: handleUpdateApproval } = useMutation({
     mutationFn: updateApproval,
@@ -67,7 +71,7 @@ export const PendingApprovalDetails: React.FC<PendingApprovalDetailsProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[960px] cursor-default">
+      <DialogContent className="w-[80%] max-w-[960px] cursor-default">
         <DialogHeader>
           <DialogTitle>{approval?.paper?.theme?.label}</DialogTitle>
           <span className="text-muted-foreground text-sm font-semibold">
@@ -97,13 +101,13 @@ export const PendingApprovalDetails: React.FC<PendingApprovalDetailsProps> = ({
             <span className="font-medium">Orientador:</span>{" "}
             {approval?.paper?.advisor?.name} - {approval?.paper?.advisor?.email}
           </p>
-          <div>
+          <div className="overflow-hidden w-full max-w-[580px]">
             <span className="text-sm text-muted-foreground font-semibold">
               Link para documento:
             </span>{" "}
             <Button variant="link" className="p-0">
-              <span className="block w-full text-ellipsis">
-                {approval?.paper?.documentUrl}
+              <span className="block max-w-[580px] text-ellipsis text-left whitespace-nowrap overflow-hidden line-clamp-1">
+                {documentUrl}
               </span>
             </Button>
           </div>

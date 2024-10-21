@@ -13,18 +13,22 @@ export type PendingApprovalCardProps = {
 export const PendingApprovalCard: React.FC<PendingApprovalCardProps> = ({
   approval,
 }) => {
+  const documentUrl =
+    approval.paper?.type === "PTCC"
+      ? approval.paper?.ptccDocumentUrl
+      : approval.paper?.tccDocumentUrl;
   const [showApprovalDetails, setShowApprovalDetails] = useState(false);
 
   const handleLinkClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
-    window.open(approval?.paper?.documentUrl, "_blank");
+    window.open(documentUrl, "_blank");
   };
 
   return (
     <>
       <Card
-        className="min-w-[380px] cursor-pointer transition-transform hover:scale-[1.02]"
+        className="w-[400px] cursor-pointer hover:bg-muted"
         onClick={() => setShowApprovalDetails((prev) => !prev)}
       >
         <CardContent>
@@ -58,11 +62,11 @@ export const PendingApprovalCard: React.FC<PendingApprovalCardProps> = ({
               <Button
                 id={`"document_link"#${approval.id}`}
                 variant="link"
-                className="p-0 h-8"
+                className="p-0 h-8 overflow-hidden"
                 onClick={handleLinkClick}
               >
-                <span className="block w-full text-ellipsis text-left">
-                  {approval.paper?.documentUrl}
+                <span className="block text-ellipsis text-left whitespace-nowrap overflow-hidden line-clamp-1">
+                  {documentUrl}
                 </span>
               </Button>
             </div>
