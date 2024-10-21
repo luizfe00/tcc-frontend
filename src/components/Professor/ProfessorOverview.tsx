@@ -31,7 +31,10 @@ export const ProfessorOverview: React.FC<ProfessorOverviewProps> = ({
         .flatMap((category) => category.name)
         .join(", "),
       approvals: detail.paper?.approvals ?? [],
-      link: detail.paper?.documentUrl ?? "",
+      link:
+        detail.paper?.type === "PTCC"
+          ? detail.paper?.ptccDocumentUrl ?? ""
+          : detail.paper?.tccDocumentUrl ?? "",
       type: detail.paper?.type ?? "",
       status: getPaperStatus(detail.paper?.approvals ?? []).label,
     }));
