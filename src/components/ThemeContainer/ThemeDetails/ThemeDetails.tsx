@@ -100,10 +100,12 @@ export const ThemeDetailsDialog: React.FC<ThemeDetailsDialogProps> = ({
             <span>
               {theme.owner.name} - {theme.owner.email}
             </span>
-            <span>
-              De {format(theme.startDate, "dd/MM/yyyy")} até{" "}
-              {format(addDays(theme.startDate, theme.duration), "dd/MM/yyyy")}
-            </span>
+            {theme?.startDate && (
+              <span>
+                De {format(theme.startDate, "dd/MM/yyyy")} até{" "}
+                {format(addDays(theme.startDate, theme.duration), "dd/MM/yyyy")}
+              </span>
+            )}
           </DialogDescription>
         </DialogHeader>
         <p className="text-sm">{theme.summary}</p>

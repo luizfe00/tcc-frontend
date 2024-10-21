@@ -56,15 +56,16 @@ export type Interest = {
 
 export type Paper = {
   id?: string;
-  documentUrl?: string;
+  ptccDocumentUrl?: string;
+  tccDocumentUrl?: string;
   type: PaperType;
   orientee?: User;
   advisor?: User;
   theme?: Theme;
   themeId?: string;
   stages?: PaperStage[];
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
   deletedAt?: string;
   approvals?: Approval[];
 };

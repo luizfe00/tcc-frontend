@@ -3,12 +3,9 @@ import {
   PaperTable,
 } from "@/components/Paper/PapersTable/PaperColumns/PaperColumns";
 import { PaperDataTable } from "@/components/Paper/PapersTable/PaperData/PaperData";
-import { PendingStageCard } from "@/components/Stage/PendingStageCard/PendingStageCard";
 import { Separator } from "@/components/ui/separator";
 import { Paper } from "@/interfaces";
-import { getPendingFeedback } from "@/services/stageService";
 import { formatDate } from "@/utils/DateUtil";
-import { useQuery } from "@tanstack/react-query";
 import { addDays, format } from "date-fns";
 import { useMemo } from "react";
 
@@ -19,11 +16,6 @@ export interface ProfessorPaperViewProps {
 export const ProfessorPaperView = ({
   papers = [],
 }: ProfessorPaperViewProps) => {
-  const { data: pendingFeedback } = useQuery({
-    queryKey: ["pendingFeedback"],
-    queryFn: getPendingFeedback,
-  });
-
   const paperDataTable = useMemo(() => {
     const dataTable: PaperTable[] = papers.map((paper) => ({
       dateRange: `de ${formatDate(paper.theme?.startDate)} até ${format(
@@ -31,7 +23,10 @@ export const ProfessorPaperView = ({
         "dd/MM/yyyy"
       )}`,
       id: paper.id ?? "",
-      link: paper.documentUrl ?? "",
+      link:
+        paper.type === "PTCC"
+          ? paper.ptccDocumentUrl ?? ""
+          : paper.tccDocumentUrl ?? "",
       orientee: `${paper.orientee?.name} - ${paper.orientee?.email}`,
       title: paper.theme?.label ?? "",
       type: paper.type,
@@ -46,11 +41,6 @@ export const ProfessorPaperView = ({
       <div className="mb-4">
         <span className="text-gray-600 font-semibold">Aguardando Resposta</span>
         <Separator className="mt-1" />
-      </div>
-      <div className="flex flex-wrap gap-2 mb-4">
-        {pendingFeedback?.map((stage) => (
-          <PendingStageCard key={stage.id} stage={stage} />
-        ))}
       </div>
       <PaperDataTable columns={paperColumns} data={paperDataTable} />
     </>

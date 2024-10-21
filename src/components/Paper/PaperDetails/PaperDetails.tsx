@@ -9,8 +9,10 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { Paper } from "@/interfaces";
 import { updatePaper } from "@/services/paperService";
+import { useUserStore } from "@/stores/user/user.store";
 import { cn } from "@/utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { formatDate } from "@/utils/DateUtil";
+import { useMutation } from "@tanstack/react-query";
 import { addDays, format } from "date-fns";
 import { EditIcon } from "lucide-react";
 import { useState } from "react";
@@ -20,18 +22,25 @@ export interface PaperDetailsProps {
 }
 
 export const PaperDetails = ({ paper }: PaperDetailsProps) => {
+  const documentUrl =
+    paper.type === "PTCC" ? paper.ptccDocumentUrl : paper.tccDocumentUrl;
+  const userState = useUserStore((state) => state);
   const [showLinkInput, setShowLinkInput] = useState(false);
-  const [documentLink, setDocumentLink] = useState(paper.documentUrl);
+  const [documentLink, setDocumentLink] = useState(documentUrl ?? "");
 
-  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationKey: ["updatePaper"],
     mutationFn: updatePaper,
     onSuccess: (data, variables) => {
-      console.log(data, variables);
-      queryClient.setQueryData(["userPapers"], (oldData: Paper[]) => {
-        return [{ ...oldData[0], documentUrl: variables.documentUrl }];
-      });
+      if (userState?.user) {
+        userState.setUser({
+          ...userState.user,
+          orienteePaper: {
+            ...paper,
+            documentUrl: variables.documentUrl,
+          } as Paper,
+        });
+      }
       setShowLinkInput(false);
       toast({
         description: "Link atualizado com sucesso",
@@ -54,19 +63,24 @@ export const PaperDetails = ({ paper }: PaperDetailsProps) => {
       return;
     }
 
-    if (documentLink === paper.documentUrl) {
+    if (documentLink === documentUrl) {
       setShowLinkInput(false);
       return;
     }
 
-    mutation.mutate({ paperId: paper.id ?? "", documentUrl: documentLink });
+    mutation.mutate({
+      paperId: paper.id ?? "",
+      ...(paper.type === "PTCC"
+        ? { ptccDocumentUrl: documentLink }
+        : { tccDocumentUrl: documentLink }),
+    });
   };
 
   const handleLinkClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
 
-    window.open(paper.documentUrl, "_blank");
+    window.open(documentUrl, "_blank");
   };
 
   return (
@@ -85,26 +99,28 @@ export const PaperDetails = ({ paper }: PaperDetailsProps) => {
             <span className="font-normal">{paper.orientee?.name}</span>
           </span>
         </div>
-        <div className="flex flex-col">
-          <span className="font-semibold text-sm">
-            Início:{" "}
-            <span className="font-normal">
-              {format(paper.theme?.startDate ?? "", "dd/MM/yyyy")}
+        {paper?.theme?.startDate && (
+          <div className="flex flex-col">
+            <span className="font-semibold text-sm">
+              Início:{" "}
+              <span className="font-normal">
+                {formatDate(paper.theme?.startDate)}
+              </span>
             </span>
-          </span>
-          <span className="font-semibold text-sm">
-            Fim:{" "}
-            <span className="font-normal">
-              {format(
-                addDays(
-                  paper.theme?.startDate ?? "",
-                  paper.theme?.duration ?? 30
-                ),
-                "dd/MM/yyyy"
-              )}
+            <span className="font-semibold text-sm">
+              Fim:{" "}
+              <span className="font-normal">
+                {format(
+                  addDays(
+                    paper.theme?.startDate ?? "",
+                    paper.theme?.duration ?? 30
+                  ),
+                  "dd/MM/yyyy"
+                )}
+              </span>
             </span>
-          </span>
-        </div>
+          </div>
+        )}
       </div>
       <Accordion type="single" collapsible className="mb-2">
         <AccordionItem value="teste">
@@ -130,13 +146,13 @@ export const PaperDetails = ({ paper }: PaperDetailsProps) => {
               value={documentLink}
               onChange={(event) => setDocumentLink(event.target.value)}
             />
-          ) : paper.documentUrl ? (
+          ) : documentUrl ? (
             <Button
               variant={"link"}
               className={cn(!showLinkInput && "pl-0", "text-sm")}
               onClick={handleLinkClick}
             >
-              {paper.documentUrl}
+              {documentUrl}
             </Button>
           ) : (
             <span className="block my-auto text-sm">
